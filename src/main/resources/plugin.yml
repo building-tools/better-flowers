@@ -1,0 +1,13 @@
+name: BetterFlowers
+version: '0.0.1'
+main: com.uroria.betterflowers.BetterFlowers
+api-version: '1.20'
+website: https://uroria.com
+author: Konfuzius
+description: A strong tool to create custom flowers.
+
+commands:
+  flower:
+    description: Opens a menu to create custom flower
+  uf:
+    description: Undo a flower placement
