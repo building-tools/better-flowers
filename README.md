@@ -3,12 +3,15 @@
 # BetterFlowers
 But what does it do?
 
-
 - Open an inventory for creating placeable flower patterns.
 - Design flower patterns with a height capability of up to 9 blocks.
 - Introduce a randomization element to decide whether a single flower should be placed or not, adding variety to patterns.
 - Utilize entire flower groups that consist of various flower types, providing options for diverse and visually appealing designs.
 - Implement the ability to undo one or multiple flower placements, allowing for easy correction of mistakes or experimentation with different arrangements.
+
+# Minecraft-Versions
+
+### Supported Minecraft-Versions: 1.20.2
 
 # Commands
 ```
