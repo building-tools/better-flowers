@@ -267,16 +267,16 @@ public enum FlowerCollection {
             new DefaultFlower(Material.IRON_BARS, "Iron Bars")))),
 
     LEAVES(new FlowerGroup((Material.OAK_LEAVES), "Leaves", List.of(
-            new DefaultFlower(Material.OAK_LEAVES, "Oak Leaves"),
-            new DefaultFlower(Material.SPRUCE_LEAVES, "Spruce Leaves"),
-            new DefaultFlower(Material.DARK_OAK_LEAVES, "Dark Oak Leaves"),
-            new DefaultFlower(Material.BIRCH_LEAVES, "Birch Leaves"),
-            new DefaultFlower(Material.JUNGLE_LEAVES, "Jungle Leaves"),
-            new DefaultFlower(Material.ACACIA_LEAVES, "Acacia Leaves"),
-            new DefaultFlower(Material.MANGROVE_LEAVES, "Mangrove Leaves"),
-            new DefaultFlower(Material.CHERRY_LEAVES, "Cherry Leaves"),
-            new DefaultFlower(Material.AZALEA_LEAVES, "Azalea Leaves"),
-            new DefaultFlower(Material.FLOWERING_AZALEA_LEAVES, "Flowering Azalea Leaves")))),
+            new LeaveFlower(Material.OAK_LEAVES, "Oak Leaves", true),
+            new LeaveFlower(Material.SPRUCE_LEAVES, "Spruce Leaves", true),
+            new LeaveFlower(Material.DARK_OAK_LEAVES, "Dark Oak Leaves", true),
+            new LeaveFlower(Material.BIRCH_LEAVES, "Birch Leaves", true),
+            new LeaveFlower(Material.JUNGLE_LEAVES, "Jungle Leaves", true),
+            new LeaveFlower(Material.ACACIA_LEAVES, "Acacia Leaves", true),
+            new LeaveFlower(Material.MANGROVE_LEAVES, "Mangrove Leaves", true),
+            new LeaveFlower(Material.CHERRY_LEAVES, "Cherry Leaves", true),
+            new LeaveFlower(Material.AZALEA_LEAVES, "Azalea Leaves", true),
+            new LeaveFlower(Material.FLOWERING_AZALEA_LEAVES, "Flowering Azalea Leaves", true)))),
 
     PLACEHOLDER(new FlowerGroup(Material.DIAMOND_BLOCK, "PLACEHOLDER/AIR", List.of(
             new DefaultFlower(Material.DIAMOND_BLOCK, "Diamond BLock"),
