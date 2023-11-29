@@ -6,10 +6,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Candle;
 
+@Getter
 public final class CandleFlower extends WaterloggableFlower {
 
-    private final @Getter boolean isLit;
-    private final @Getter int candles;
+    private final boolean isLit;
+    private final int candles;
 
     public CandleFlower(Material display, Material blockMaterial, String displayName, boolean isWaterlogged, boolean isLit, int candles) {
         super(display, blockMaterial, displayName, isWaterlogged);

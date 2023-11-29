@@ -8,9 +8,10 @@ import org.bukkit.block.data.type.PinkPetals;
 import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.block.data.type.TurtleEgg;
 
+@Getter
 public final class ClusterFlower extends SingleFlower {
 
-    private final @Getter int amount;
+    private final int amount;
 
     public ClusterFlower(Material display, Material blockMaterial, String displayName, int amount) {
         super(display, blockMaterial, displayName);

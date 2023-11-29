@@ -6,8 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.CaveVines;
 
+@Getter
 public final class CaveVinePlant extends AgebleFlower {
-    private final @Getter boolean hasBarries;
+    private final boolean hasBarries;
 
     public CaveVinePlant(Material display, Material blockMaterial, String displayName, int age, boolean hasBerries) {
         super(display, blockMaterial, displayName, age);

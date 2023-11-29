@@ -4,9 +4,10 @@ import lombok.Getter;
 
 import org.bukkit.Material;
 
+@Getter
 public abstract class WaterloggableFlower extends SingleFlower {
 
-    private final @Getter boolean isWaterlogged;
+    private final boolean isWaterlogged;
 
     public WaterloggableFlower(Material display, Material blockMaterial, String displayName, boolean isWaterlogged) {
         super(display, blockMaterial, displayName);

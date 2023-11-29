@@ -7,12 +7,11 @@ import org.bukkit.Material;
 import java.util.List;
 import java.util.Random;
 
+@Getter
 public final class FlowerData {
 
     private final List<SingleFlower> flowers;
-    @Getter
     private final String name;
-    @Getter
     private final Material display;
 
     public FlowerData(SingleFlower singleFlower) {

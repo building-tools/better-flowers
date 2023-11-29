@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 public final class FlowerManager {
 
-    private final @Getter Map<ItemStack, List<FlowerData>> flowers;
-    private final @Getter Map<ItemStack, List<Boolean>> flowerRandomizer;
-    private final @Getter Map<UUID, List<Operation>> operationHistory;
+    private final Map<ItemStack, List<FlowerData>> flowers;
+    private final Map<ItemStack, List<Boolean>> flowerRandomizer;
+    private final Map<UUID, List<Operation>> operationHistory;
 
     public FlowerManager() {
         this.flowers = new HashMap<>();

@@ -1,12 +1,14 @@
 package com.uroria.betterflowers.utils;
 
 import com.uroria.betterflowers.flowers.placable.*;
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Bamboo;
 
 import java.util.List;
 
+@Getter
 public enum FlowerCollection {
 
     BAMBOO(new FlowerGroup(Material.BAMBOO, "Bamboo", List.of(
@@ -289,9 +291,5 @@ public enum FlowerCollection {
 
     FlowerCollection(FlowerGroup flowerGroup) {
         this.flowerGroup = flowerGroup;
-    }
-
-    public FlowerGroup getFlowerGroup() {
-        return flowerGroup;
     }
 }

@@ -7,9 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 
+@Getter
 public final class DoubleFlower extends SingleFlower {
 
-    private final @Getter Bisected.Half half;
+    private final Bisected.Half half;
 
     public DoubleFlower(Material display, Material blockMaterial, String displayName, Bisected.Half half) {
         super(display, blockMaterial, displayName);

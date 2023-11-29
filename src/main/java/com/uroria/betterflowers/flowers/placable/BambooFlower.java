@@ -6,9 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Bamboo;
 
+@Getter
 public final class BambooFlower extends AgebleFlower {
 
-    private final @Getter Bamboo.Leaves leaves;
+    private final Bamboo.Leaves leaves;
 
     public BambooFlower(Material display, Material blockMaterial, String displayName, int age, Bamboo.Leaves leaves) {
         super(display, blockMaterial, displayName, age);

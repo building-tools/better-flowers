@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public final class DefaultFlower extends SingleFlower {
+
     public DefaultFlower(Material display, Material blockMaterial, String displayName) {
         super(display, blockMaterial, displayName);
     }

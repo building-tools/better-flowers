@@ -6,9 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Leaves;
 
+@Getter
 public final class LeaveFlower extends SingleFlower {
 
-    private final @Getter boolean isPersistent;
+    private final boolean isPersistent;
 
     public LeaveFlower(Material display, Material blockMaterial, String displayName, boolean isPersistent) {
         super(display, blockMaterial, displayName);

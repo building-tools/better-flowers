@@ -4,9 +4,10 @@ import lombok.Getter;
 
 import org.bukkit.Material;
 
+@Getter
 public abstract class AgebleFlower extends SingleFlower{
 
-    private final @Getter int age;
+    private final int age;
 
     public AgebleFlower(Material display, Material blockMaterial, String displayName, int age) {
         super(display, blockMaterial, displayName);

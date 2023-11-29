@@ -7,9 +7,10 @@ import org.bukkit.block.Block;
 
 import java.util.List;
 
+@Getter
 public final class FlowerGroup extends SingleFlower {
 
-    private final @Getter List<SingleFlower> flowers;
+    private final List<SingleFlower> flowers;
 
     public FlowerGroup(Material material, Material blockMaterial, String displayName, List<SingleFlower> flowers) {
         super(material, blockMaterial, displayName);
