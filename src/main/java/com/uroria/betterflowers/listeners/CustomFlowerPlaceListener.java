@@ -13,7 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -31,17 +32,23 @@ public final class CustomFlowerPlaceListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    private void onCustomFlowerPlaceEvent(BlockPlaceEvent blockPlaceEvent) {
+    private void onCustomFlowerPlaceEvent(PlayerInteractEvent playerInteractEvent) {
 
-        if (blockPlaceEvent.getItemInHand().getType() != Material.BLAZE_POWDER) return;
+        if (playerInteractEvent.getAction().isLeftClick()) return;
+        if (playerInteractEvent.getHand() != EquipmentSlot.HAND) return;
+        if (!playerInteractEvent.hasItem() || playerInteractEvent.getItem() == null) return;
 
-        final var currentLocation = blockPlaceEvent.getBlock().getLocation();
+        if (playerInteractEvent.getItem().getType() != Material.BLAZE_POWDER) return;
+        if (playerInteractEvent.getClickedBlock() == null) return;
+        if (playerInteractEvent.getInteractionPoint() == null) return;
+
+        final var currentLocation = playerInteractEvent.getInteractionPoint();
         final var oldBlocks = new HashMap<Vector, BlockData>();
 
-        handleFlowerPlacement(blockPlaceEvent, oldBlocks, blockPlaceEvent.getBlock().getLocation());
-        handleFlowerHistory(blockPlaceEvent, oldBlocks);
+        handleFlowerPlacement(playerInteractEvent, oldBlocks, currentLocation);
+        handleFlowerHistory(playerInteractEvent, oldBlocks);
 
-        blockPlaceEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
+        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -50,14 +57,14 @@ public final class CustomFlowerPlaceListener implements Listener {
         if (flowerBlocks.contains(currentBlock)) blockPhysicsEvent.setCancelled(true);
     }
 
-    private void handleFlowerPlacement(BlockPlaceEvent blockPlaceEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
+    private void handleFlowerPlacement(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
 
-        final var item = blockPlaceEvent.getItemInHand();
+        final var item = playerInteractEvent.getItem();
         if (!flowerManager.getFlowers().containsKey(item)) return;
 
         final var flowers = flowerManager.getFlowers().get(item);
         final var values = flowerManager.getFlowerRandomizer().get(item);
-        final var offset = playerLookUp(blockPlaceEvent.getPlayer()) ? -1 : 1;
+        final var offset = playerLookUp(playerInteractEvent.getPlayer()) ? -1 : 1;
 
         for (int i = 0; i < flowers.size(); i++) {
             if (values.get(i) && new Random().nextBoolean()) continue;
