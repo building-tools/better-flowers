@@ -151,7 +151,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
         //just takes the current system-time as a display name
         final var name = "<green>ID: " + System.currentTimeMillis() + "</green>";
-        final var placer = new ItemBuilder(Material.FLOWER_POT).setName(name).setLore(description).build();
+        final var placer = new ItemBuilder(Material.BLAZE_POWDER).setName(name).setLore(description).build();
 
         player.getInventory().addItem(placer);
         player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Flower has been created"));

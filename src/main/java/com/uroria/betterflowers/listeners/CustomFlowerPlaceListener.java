@@ -33,7 +33,7 @@ public final class CustomFlowerPlaceListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     private void onCustomFlowerPlaceEvent(BlockPlaceEvent blockPlaceEvent) {
 
-        if (blockPlaceEvent.getItemInHand().getType() != Material.FLOWER_POT) return;
+        if (blockPlaceEvent.getItemInHand().getType() != Material.BLAZE_POWDER) return;
 
         final var currentLocation = blockPlaceEvent.getBlock().getLocation();
         final var oldBlocks = new HashMap<Vector, BlockData>();
@@ -63,7 +63,6 @@ public final class CustomFlowerPlaceListener implements Listener {
             if (values.get(i) && new Random().nextBoolean()) continue;
 
             final var currentBlock = currentLocation.getBlock();
-            if (currentBlock.getBlockData().getMaterial() == Material.FLOWER_POT) currentBlock.setType(Material.AIR);
             oldBlocks.put(currentBlock.getLocation().toVector(), currentBlock.getBlockData());
 
             flowerBlocks.add(currentBlock);
