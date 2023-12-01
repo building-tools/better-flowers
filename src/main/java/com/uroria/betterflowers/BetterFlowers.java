@@ -20,7 +20,7 @@ public final class BetterFlowers extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        getCommand("flower").setExecutor(new Flowers(this));
+        getCommand("flower").setExecutor(new Flower(this));
         getCommand("flowerbrush").setExecutor(new FlowerBrush(this));
         getCommand("uf").setExecutor(new UndoFlower(this));
         Bukkit.getPluginManager().registerEvents(new CustomFlowerPlaceListener(this), this);
