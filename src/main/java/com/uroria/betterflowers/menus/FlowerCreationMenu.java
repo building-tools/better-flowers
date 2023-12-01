@@ -1,6 +1,7 @@
 package com.uroria.betterflowers.menus;
 
 import com.uroria.betterflowers.BetterFlowers;
+import com.uroria.betterflowers.data.FlowerGroupData;
 import com.uroria.betterflowers.flowers.SingleFlower;
 import com.uroria.betterflowers.flowers.placable.FlowerGroup;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
@@ -156,8 +157,9 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         player.getInventory().addItem(placer);
         player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Flower has been created"));
 
-        betterFlowers.getFlowerManager().getFlowers().put(placer, List.copyOf(personalFlower));
-        betterFlowers.getFlowerManager().getFlowerRandomizer().put(placer, List.copyOf(randomizer));
+        final var flowerGroupData = new FlowerGroupData(List.copyOf(personalFlower));
+        betterFlowers.getFlowerManager().getFlowers().put(placer, flowerGroupData);
+        betterFlowers.getFlowerManager().getFlowerRandomizer().put(flowerGroupData, List.copyOf(randomizer));
 
         player.getInventory().close();
     }

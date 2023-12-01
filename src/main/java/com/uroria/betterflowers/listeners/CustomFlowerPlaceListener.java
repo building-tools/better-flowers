@@ -62,8 +62,9 @@ public final class CustomFlowerPlaceListener implements Listener {
         final var item = playerInteractEvent.getItem();
         if (!flowerManager.getFlowers().containsKey(item)) return;
 
-        final var flowers = flowerManager.getFlowers().get(item);
-        final var values = flowerManager.getFlowerRandomizer().get(item);
+        final var flowerGroupData = flowerManager.getFlowers().get(item);
+        final var flowers = flowerGroupData.flowerData();
+        final var values = flowerManager.getFlowerRandomizer().get(flowerGroupData);
         final var offset = playerLookUp(playerInteractEvent.getPlayer()) ? -1 : 1;
 
         for (int i = 0; i < flowers.size(); i++) {
@@ -78,9 +79,13 @@ public final class CustomFlowerPlaceListener implements Listener {
         }
     }
 
-    private void handleFlowerHistory(BlockPlaceEvent blockPlaceEvent, HashMap<Vector, BlockData> oldBlocks) {
-        var history = new Operation(oldBlocks, blockPlaceEvent.getBlockPlaced().getWorld());
-        var uuid = blockPlaceEvent.getPlayer().getUniqueId();
+    private void handleFlowerHistory(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks) {
+
+        final var location = playerInteractEvent.getClickedBlock();
+        if (location == null) return;
+
+        final var history = new Operation(oldBlocks, playerInteractEvent.getClickedBlock().getWorld());
+        final var uuid = playerInteractEvent.getPlayer().getUniqueId();
 
         if (flowerManager.getOperationHistory().containsKey(uuid)) {
             var copy = new ArrayList<>(List.copyOf(flowerManager.getOperationHistory().get(uuid)));
