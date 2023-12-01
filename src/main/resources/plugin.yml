@@ -11,3 +11,5 @@ commands:
     description: Opens a menu to create custom flower
   uf:
     description: Undo a flower placement
+  flowerbrush:
+    description: Opens a menu to create flower brush
