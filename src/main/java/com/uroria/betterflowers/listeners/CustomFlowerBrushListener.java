@@ -62,6 +62,7 @@ public final class CustomFlowerBrushListener implements Listener {
 
         for (var innerLocation : getPlayerCircle(location, radius)) {
             if (air >= new Random().nextFloat()) continue;
+            if (adjustHeight(innerLocation)) continue;
             handleFlowerPlacement(playerInteractEvent, oldBlocks, innerLocation);
         }
     }
