@@ -172,9 +172,10 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
     private void onRemoveClick(InventoryClickEvent inventoryClickEvent) {
         inventoryClickEvent.setCancelled(true);
 
-        if (!personalFlower.isEmpty() && !randomizer.isEmpty()) {
+        if (!personalFlower.isEmpty() && !randomizer.isEmpty() && !isGroup.isEmpty()) {
             personalFlower.remove(personalFlower.size() - 1);
             randomizer.remove(randomizer.size() - 1);
+            isGroup.remove(isGroup.size() - 1);
         }
 
         player.playSound(player.getLocation(), Sound.BLOCK_COMPOSTER_EMPTY, 1, 0);
