@@ -9,19 +9,19 @@ import com.uroria.betterflowers.utils.ItemBuilder;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
     private final FlowerManager flowerManager;
-    private final Player player;
+    private final Map<FlowerGroupData, Material> maskData;
     private final List<FlowerGroupData> flowerGroupData;
+    private final Player player;
+
     private int radius;
     private float airRandomizer;
 
@@ -29,9 +29,10 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         super(MiniMessage.miniMessage().deserialize("<gradient:#232526:#414345>Flower Brush"), 4);
 
         this.flowerManager = betterFlowers.getFlowerManager();
-        this.player = player;
-
         this.flowerGroupData = new ArrayList<>();
+        this.maskData = new HashMap<>();
+
+        this.player = player;
         this.radius = 3;
         this.airRandomizer = 0.0f;
 
@@ -49,15 +50,15 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID).setName("Current air percentage" + airRandomizer).build(), this::onChangeAirRandomizer);
 
         for (int index = 18; index < 27; index++) {
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("Insert Flower Mask!").build(), inventoryClickEvent -> inventoryClickEvent.setCancelled(true));
+            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("Insert Flower Mask!").build(), this::onMaskAdd);
         }
 
         for (int index = 27; index < 36; index++) {
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("Insert Flower Placer!").build(), this::displayFlowerPlacer);
+            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("Insert Flower Placer!").build(), this::onFlowerAdd);
         }
     }
 
-    private void displayFlowerPlacer(InventoryClickEvent inventoryClickEvent) {
+    private void onFlowerAdd(InventoryClickEvent inventoryClickEvent) {
         inventoryClickEvent.setCancelled(true);
 
         final var flowerItem = inventoryClickEvent.getCursor();
@@ -83,7 +84,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var flowers = flowerManager.getFlowers().get(flowerItem);
         this.flowerGroupData.remove(flowers);
-        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), this::displayFlowerPlacer);
+        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), this::onFlowerAdd);
     }
 
     private void onChangeAirRandomizer(InventoryClickEvent inventoryClickEvent) {
@@ -116,10 +117,49 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var name = "<green>ID: " + System.currentTimeMillis() + "</green>";
         final var brushItem = new ItemBuilder(Material.BLAZE_ROD).setName(name).build();
-        this.flowerManager.getBrushes().put(brushItem, new BrushData(flowerGroupData, radius, airRandomizer));
+        this.flowerManager.getBrushes().put(brushItem, new BrushData(flowerGroupData, radius, airRandomizer, maskData));
 
         this.player.getInventory().addItem(brushItem);
-        this.player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Flower has been created"));
+        this.player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Brush has been created"));
         this.player.getInventory().close();
+    }
+
+    private void onMaskAdd(InventoryClickEvent inventoryClickEvent) {
+
+        final var slot = inventoryClickEvent.getSlot();
+        final var maskItemType = inventoryClickEvent.getCursor().getType();
+        final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
+        System.out.println(flowerGroupData.toString());
+
+        if (flowerGroupData.isEmpty()) return;
+        this.maskData.put(flowerGroupData.get(), maskItemType);
+        this.setSlot(slot, new ItemBuilder(maskItemType).setName("Current Mask: " + maskItemType).build(), this::onMaskRemove);
+    }
+
+    private void onMaskRemove(InventoryClickEvent inventoryClickEvent) {
+
+        final var slot = inventoryClickEvent.getSlot();
+        final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
+
+        System.out.println(flowerGroupData.toString());
+        if (flowerGroupData.isEmpty()) return;
+        this.maskData.remove(flowerGroupData.get());
+        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("Insert Flower Mask!").build(), this::onMaskAdd);
+    }
+
+    private Optional<FlowerGroupData> getFlowerGroupFromMask(InventoryClickEvent inventoryClickEvent) {
+        inventoryClickEvent.setCancelled(true);
+
+        final var slot = inventoryClickEvent.getSlot();
+        System.out.println("1");
+        if (slot >= 26) return Optional.empty();
+
+        final var coherentSlot = slot + 9;
+        final var flowerItem = this.inventory.getItem(coherentSlot);
+
+        System.out.println("2");
+        if (!flowerManager.getFlowers().containsKey(flowerItem)) return Optional.empty();
+        System.out.println("3");
+        return Optional.of(flowerManager.getFlowers().get(flowerItem));
     }
 }
