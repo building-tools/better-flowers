@@ -10,6 +10,8 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 @Getter
 public final class BetterFlowers extends JavaPlugin {
 
@@ -27,13 +29,22 @@ public final class BetterFlowers extends JavaPlugin {
 
     private void registerCommands() {
         final var flowerCommand = getCommand("flower");
-        if (flowerCommand != null) flowerCommand.setExecutor(new Flower(this));
+        if (flowerCommand != null) {
+            flowerCommand.setAliases(List.of("f"));
+            flowerCommand.setExecutor(new Flower(this));
+        }
 
         final var flowerBrushCommand = getCommand("flowerbrush");
-        if (flowerBrushCommand != null) flowerBrushCommand.setExecutor(new FlowerBrush(this));
+        if (flowerBrushCommand != null) {
+            flowerBrushCommand.setAliases(List.of("fb"));
+            flowerBrushCommand.setExecutor(new FlowerBrush(this));
+        }
 
-        final var undoFlowerCommand = getCommand("uf");
-        if (undoFlowerCommand != null) undoFlowerCommand.setExecutor(new UndoFlower(this));
+        final var undoFlowerCommand = getCommand("undoflower");
+        if (undoFlowerCommand != null) {
+            undoFlowerCommand.setAliases(List.of("uf"));
+            undoFlowerCommand.setExecutor(new UndoFlower(this));
+        }
     }
 
     private void registerListener() {

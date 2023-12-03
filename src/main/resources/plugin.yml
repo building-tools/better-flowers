@@ -9,7 +9,13 @@ description: A strong tool to create custom flowers & use them as a brush.
 commands:
   flower:
     description: Opens a menu to create custom flower.
+    aliases:
+      - f
   flowerbrush:
       description: Opens a menu to create flower brush.
-  uf:
+      aliases:
+        - fb
+  undoflower:
     description: Undo your last placed flower/brush.
+    aliases:
+      - uf
