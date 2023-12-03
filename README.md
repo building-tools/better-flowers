@@ -18,16 +18,18 @@ But what does it do?
 /flower
 ```
 opens the creation-inventory
++ alias: /f
 ```
-/uf
+/undoflower
 ```
 to undo your last flower placement
+ - alias: /uf
 ```
-/uf 5
+/undoflower 5
 ```
 to undo your last 5 
 ```
-/uf 5 <player>
+/undoflower 5 <player>
 ```
 to undo the last 5 flower placements of the given player
 
@@ -43,9 +45,9 @@ betterflowers.undo
 to undo a flower placement
 
 # Updates
-- [ ] flower-brush
+- [ ] flower-brush 
 - [ ] flower-history
-
+### If you have any ideas to add contact my discord: konfuzius
 # Preview
 
 ***An explanatory video will be coming soon***
@@ -53,9 +55,9 @@ to undo a flower placement
 # Creation-Inventory
 ![image](https://github.com/raphael-goetz/betterflowers/assets/52959657/d77f539a-c078-44f8-8353-5a924869374e)
 
-If open, you can choose a category that contains more specific flowers with different blockstates to use in your flower pattern. To select a flower you first click on a category and then click on a specific flower to add them to your pattern. If you want to add the whole category then just shiftclick on a category at the beginning.
+If open, you can choose a category that contains more specific flowers with different block states to use in your flower pattern. To select a flower you first click on a category and then click on a specific flower to add them to your pattern. If you want to add the whole category then just shift-click on a category at the beginning.
 
-If you leftclick it will be added without a randomizer. Else it will be added with a randomzier.
+If you left-click it will be added without a randomizer. Else it will be added with a randomzier.
 
  - SHERD: Create a flower --> get a flowerpot to place the flower
  - STRUCTURE_VOID: get back to the main menu
@@ -67,5 +69,5 @@ If you leftclick it will be added without a randomizer. Else it will be added wi
  - red glass indicates the selection of a single flower to always be placed
 
 ![image](https://github.com/raphael-goetz/betterflowers/assets/52959657/9b8b5a56-b4e6-46e8-b88e-902e0dcea8c0)
- - blue glass indicates the selecton of a whole flower group that will always will randomly
- - magenta glass indicates the selecton of a whole flower group that always will be placed
+ - blue glass indicates the selection of a whole flower group that will always will randomly
+ - magenta glass indicates the selection of a whole flower group that always will be placed
