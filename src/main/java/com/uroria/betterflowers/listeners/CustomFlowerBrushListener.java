@@ -1,6 +1,7 @@
 package com.uroria.betterflowers.listeners;
 
 import com.uroria.betterflowers.BetterFlowers;
+import com.uroria.betterflowers.data.FlowerGroupData;
 import com.uroria.betterflowers.data.Operation;
 import com.uroria.betterflowers.managers.FlowerManager;
 import org.bukkit.Location;
@@ -70,10 +71,13 @@ public final class CustomFlowerBrushListener implements Listener {
     private void handleFlowerPlacement(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
 
         final var item = playerInteractEvent.getItem();
-        final var flowerOptions = flowerManager.getBrushes().get(item).flowerGroupData();
+        final var flowerBrush = flowerManager.getBrushes().get(item);
+        final var flowerOptions = flowerBrush.flowerGroupData();
         final var flowerGroup = flowerOptions.get(new Random().nextInt(flowerOptions.size()));
         final var flowers = flowerGroup.flowerData();
         final var values = flowerManager.getFlowerRandomizer().get(flowerGroup);
+
+        if (!onCorrectGround(currentLocation, flowerGroup, flowerBrush.maskData())) return;
 
         for (int i = 0; i < flowers.size(); i++) {
             if (values.get(i) && new Random().nextBoolean()) continue;
@@ -113,7 +117,6 @@ public final class CustomFlowerBrushListener implements Listener {
     }
 
     private boolean adjustHeight(Location location) {
-
         final var offset = (location.getBlock().getType() == Material.AIR) ? -1 : 1;
 
         for (int index = 0; index < 10; index++) {
@@ -126,5 +129,15 @@ public final class CustomFlowerBrushListener implements Listener {
         }
 
         return true;
+    }
+
+    private boolean onCorrectGround(Location location, FlowerGroupData flowerGroupData, Map<FlowerGroupData, Material> maskData) {
+        final var floorType = location.getBlock().getRelative(BlockFace.DOWN).getType();
+
+        if (maskData.isEmpty()) return true;
+        if (!maskData.containsKey(flowerGroupData)) return true;
+        if (maskData.get(flowerGroupData) == floorType) return true;
+
+        return false;
     }
 }

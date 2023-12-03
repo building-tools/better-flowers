@@ -1,5 +1,9 @@
 package com.uroria.betterflowers.data;
 
-import java.util.List;
+import org.bukkit.Material;
 
-public record BrushData(List<FlowerGroupData> flowerGroupData, int radius, float airRandomizer) {}
+import java.util.List;
+import java.util.Map;
+
+public record BrushData(List<FlowerGroupData> flowerGroupData, int radius, float airRandomizer,
+                        Map<FlowerGroupData, Material> maskData) {}
