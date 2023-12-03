@@ -21,10 +21,22 @@ public final class BetterFlowers extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        registerCommands();
+        registerListener();
+    }
 
-        getCommand("flower").setExecutor(new Flower(this));
-        getCommand("flowerbrush").setExecutor(new FlowerBrush(this));
-        getCommand("uf").setExecutor(new UndoFlower(this));
+    private void registerCommands() {
+        final var flowerCommand = getCommand("flower");
+        if (flowerCommand != null) flowerCommand.setExecutor(new Flower(this));
+
+        final var flowerBrushCommand = getCommand("flowerbrush");
+        if (flowerBrushCommand != null) flowerBrushCommand.setExecutor(new FlowerBrush(this));
+
+        final var undoFlowerCommand = getCommand("uf");
+        if (undoFlowerCommand != null) undoFlowerCommand.setExecutor(new UndoFlower(this));
+    }
+
+    private void registerListener() {
         Bukkit.getPluginManager().registerEvents(new CustomFlowerPlaceListener(this), this);
         Bukkit.getPluginManager().registerEvents(new CustomFlowerBrushListener(this), this);
     }
