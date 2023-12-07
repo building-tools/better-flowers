@@ -2,7 +2,6 @@ package com.uroria.betterflowers.commands;
 
 import com.uroria.betterflowers.BetterFlowers;
 import com.uroria.betterflowers.data.Operation;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,9 +15,11 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
+        final var languageManager = betterFlowers.getLanguageManager();
+
         if (!(sender instanceof Player player)) return true;
         if (!player.hasPermission("betterflowers.undo")) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>You dont have enough permission to use BetterFlowers!</gradient>"));
+            languageManager.sendPlayerMessage(player, "permission.undo.error");
             return true;
         }
 
@@ -26,7 +27,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
         int undoTimes = 1;
 
         if (args.length > 2) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>To many inputs!</gradient>"));
+            languageManager.sendPlayerMessage(player, "command.undo.cross");
             return true;
         }
 
@@ -38,7 +39,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
         var operationHistories =  betterFlowers.getFlowerManager().getOperationHistory();
 
         if (!operationHistories.containsKey(undoPlayer.getUniqueId())) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>The given Player has nothing to undo!</gradient>"));
+            languageManager.sendPlayerMessage(player,"command.undo.nothing");
             return true;
         }
 
@@ -51,7 +52,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
             var currentOperation = history.get((history.size() - index) - 1);
 
             if (currentOperation.world() == null) {
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>The world to undo isn't loaded!</gradient>"));
+                languageManager.sendPlayerMessage(player,"command.undo.wrong.world");
                 break;
             }
 
@@ -64,7 +65,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
 
         history.removeAll(undo);
         operationHistories.put(undoPlayer.getUniqueId(), history);
-        player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Undo successful"));
+        languageManager.sendPlayerMessage(player,"command.undo.successful");
         return false;
     }
 

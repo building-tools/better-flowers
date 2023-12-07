@@ -6,6 +6,7 @@ import com.uroria.betterflowers.commands.UndoFlower;
 import com.uroria.betterflowers.listeners.CustomFlowerBrushListener;
 import com.uroria.betterflowers.listeners.CustomFlowerPlaceListener;
 import com.uroria.betterflowers.managers.FlowerManager;
+import com.uroria.betterflowers.managers.LanguageManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,9 +17,11 @@ import java.util.List;
 public final class BetterFlowers extends JavaPlugin {
 
     private final FlowerManager flowerManager;
+    private final LanguageManager languageManager;
 
     public BetterFlowers() {
         this.flowerManager = new FlowerManager();
+        this.languageManager = new LanguageManager();
     }
 
     @Override
