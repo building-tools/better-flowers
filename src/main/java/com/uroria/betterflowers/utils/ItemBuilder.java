@@ -1,5 +1,6 @@
 package com.uroria.betterflowers.utils;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,9 +16,9 @@ public final class ItemBuilder {
         this.itemStack = new ItemStack(material);
     }
 
-    public ItemBuilder setName(String string) {
+    public ItemBuilder setName(Component component) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(MiniMessage.miniMessage().deserialize(string));
+        itemMeta.displayName(component);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
