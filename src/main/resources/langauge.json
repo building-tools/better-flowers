@@ -1,0 +1,22 @@
+{
+  "gui.flower.title": "<gradient:#232526:#414345>Flower Creator</gradient>",
+  "gui.brush.title": "<gradient:#232526:#414345>Flower Brush</gradient>",
+
+  "gui.brush.item.display.create": "<gradient:#a8ff78:#78ffd6>Create Brush</gradient>",
+  "gui.brush.item.display.radius": "<gradient:#a8ff78:#78ffd6>Current Radius: %radius%</gradient>",
+  "gui.brush.item.display.air": "<gradient:#a8ff78:#78ffd6>Current Air: %air%</gradient>",
+  "gui.brush.item.display.mask": "<gradient:#a8ff78:#78ffd6>Insert Mask</gradient>",
+  "gui.brush.item.display.flower": "<gradient:#a8ff78:#78ffd6>Insert Flower</gradient>",
+  "gui.brush.item.display.brush": "<gradient:#a8ff78:#78ffd6>ID: %id%</gradient>",
+  "gui.brush.item.display.placeholder": " ",
+
+  "gui.brush.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Brush has been created</gradient>",
+
+  "permission.use.error": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A You dont have enough permission to use open the flower-menu!</gradient>",
+  "permission.undo.error": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A You dont have enough permission to use undo flower operations!</gradient>",
+
+  "command.undo.cross": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A To many inputs!</gradient>",
+  "command.undo.nothing": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A The given Player has nothing to undo!</gradient>",
+  "command.undo.wrong.world": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A The world to undo isn't loaded!</gradient>",
+  "command.undo.successful": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Undo successful</gradient>"
+}
