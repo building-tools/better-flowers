@@ -4,10 +4,12 @@ import com.uroria.betterflowers.BetterFlowers;
 import com.uroria.betterflowers.data.FlowerGroupData;
 import com.uroria.betterflowers.flowers.SingleFlower;
 import com.uroria.betterflowers.flowers.placable.FlowerGroup;
+import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
 import com.uroria.betterflowers.utils.FlowerCollection;
 import com.uroria.betterflowers.data.FlowerData;
 import com.uroria.betterflowers.utils.ItemBuilder;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
+    private final LanguageManager languageManager;
     private final List<FlowerData> personalFlower;
     private final List<Boolean> isGroup;
     private final List<Boolean> randomizer;
@@ -32,19 +35,20 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
     private final BetterFlowers betterFlowers;
 
     public FlowerCreationMenu(Player player, BetterFlowers betterFlowers) {
-        super(MiniMessage.miniMessage().deserialize("<gradient:#232526:#414345>Flower Creator"), 6);
+        super(betterFlowers.getLanguageManager().getComponent("gui.flower.title"), 6);
 
         this.player = player;
         this.betterFlowers = betterFlowers;
+        this.languageManager = betterFlowers.getLanguageManager();
 
         this.personalFlower = new ArrayList<>();
         this.randomizer = new ArrayList<>();
         this.isGroup = new ArrayList<>();
 
-        this.active = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).setName("<green>[randomizer]</green> <red>[group]</red>").build();
-        this.notActive = new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("<red>[randomizer] [group]</red>>").build();
-        this.wholeCategoryRan = new ItemBuilder(Material.BLUE_STAINED_GLASS_PANE).setName("<green>[randomizer] [group]</green>").build();
-        this.wholeCategory = new ItemBuilder(Material.MAGENTA_STAINED_GLASS_PANE).setName("<red>[randomizer]</red> <green>[group]</green>").build();
+        this.active = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.flower.item.randomizer.yes.no")).build();
+        this.notActive = new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.flower.item.group.no.no")).build();
+        this.wholeCategoryRan = new ItemBuilder(Material.BLUE_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.flower.item.randomizer.yes.yes")).build();
+        this.wholeCategory = new ItemBuilder(Material.MAGENTA_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.flower.item.randomizer.no.yes")).build();
     }
 
     public void open() {
@@ -64,7 +68,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         //generates placeholder
         for (var index = 27; index < 54; index++) {
             if (index >= 36 && index <= 44) continue;
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(" ").build(), this::cancelClick);
+            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.flower.item.display.placeholder")).build(), this::cancelClick);
         }
 
         //generates the display for the randomizer
@@ -80,13 +84,13 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         for (var index = 0; index < personalFlower.size(); index++) {
             final var singleFlower = personalFlower.get(index);
             final var name = "<green>" + singleFlower.getName() + " ID" + index + "</green>";
-            setSlot((36 + index), new ItemBuilder(singleFlower.getDisplay()).setName(name).build(), this::cancelClick);
+            setSlot((36 + index), new ItemBuilder(singleFlower.getDisplay()).setName(Component.text(name)).build(), this::cancelClick);
         }
 
-        setSlot(29, new ItemBuilder(Material.ECHO_SHARD).setName("<gradient:#a8ff78:#78ffd6>Create the flower").build(), this::onCreateClick);
-        setSlot(30, new ItemBuilder(Material.STRUCTURE_VOID).setName("<gradient:#a8ff78:#78ffd6>Back to Menu").build(), this::onBackClick);
-        setSlot(32, new ItemBuilder(Material.BARRIER).setName("<gradient:#EB3349:#F45C43>Delete all flowers").build(), this::onDeleteClick);
-        setSlot(33, new ItemBuilder(Material.REDSTONE).setName("<gradient:#EB3349:#F45C43>Remove top plant").build(), this::onRemoveClick);
+        setSlot(29, new ItemBuilder(Material.ECHO_SHARD).setName(languageManager.getComponent("gui.flower.item.display.create")).build(), this::onCreateClick);
+        setSlot(30, new ItemBuilder(Material.STRUCTURE_VOID).setName(languageManager.getComponent("gui.flower.item.display.back")).build(), this::onBackClick);
+        setSlot(32, new ItemBuilder(Material.BARRIER).setName(languageManager.getComponent("gui.flower.item.display.delete")).build(), this::onDeleteClick);
+        setSlot(33, new ItemBuilder(Material.REDSTONE).setName(languageManager.getComponent("gui.flower.item.display.remove")).build(), this::onRemoveClick);
     }
 
     private void generateCategories() {
@@ -102,7 +106,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
             final var currentFlowers = flowers.get(index).getFlowerGroup();
 
-            setSlot(index, new ItemBuilder(currentFlowers.getDisplay()).setName(currentFlowers.getDisplayName()).setLore(List.of(
+            setSlot(index, new ItemBuilder(currentFlowers.getDisplay()).setName(languageManager.getComponent("gui.flower.item.display.name", "%id%", currentFlowers.getDisplayName())).setLore(List.of(
                     " ",
                     "<gray> - shift click to add whole group</gray>",
                     "<gray> - shift + left click to add without</gray> <red>randomizer</red>",
@@ -123,7 +127,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
             final var singleFlower = flowerGroup.getFlowers().get(index);
 
-            setSlot(index, new ItemBuilder(singleFlower.getDisplay()).setName((singleFlower.getDisplayName())).setLore(List.of(
+            setSlot(index, new ItemBuilder(singleFlower.getDisplay()).setName(languageManager.getComponent("gui.flower.item.display.name", "%flower%", singleFlower.getDisplayName())).setLore(List.of(
                     " ",
                     "<gray> - left click to add without</gray> <red>randomizer</red>",
                     "<gray> - right click to add</gray> <green>with randomizer</green>")).build(),
@@ -151,11 +155,10 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         personalFlower.forEach(singleFlower -> description.add(" <gray>- " + singleFlower.getDisplay() + "</gray>"));
 
         //just takes the current system-time as a display name
-        final var name = "<green>ID: " + System.currentTimeMillis() + "</green>";
-        final var placer = new ItemBuilder(Material.BLAZE_POWDER).setName(name).setLore(description).build();
+        final var placer = new ItemBuilder(Material.BLAZE_POWDER).setName(languageManager.getComponent("gui.flower.item.display.name", "%id%", String.valueOf(System.currentTimeMillis()))).setLore(description).build();
 
         player.getInventory().addItem(placer);
-        player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#a8ff78:#78ffd6>Flower has been created"));
+        languageManager.sendPlayerMessage(player, "gui.flower.message.create");
 
         final var flowerGroupData = new FlowerGroupData(List.copyOf(personalFlower));
         betterFlowers.getFlowerManager().getFlowers().put(placer, flowerGroupData);
@@ -201,7 +204,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         }
 
         if (personalFlower.size() > 8) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>You already reached the maximum amount of flowers!</gradient>"));
+            languageManager.sendPlayerMessage(player, "gui.flower.message.limit");
             return;
         }
 
@@ -218,7 +221,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         inventoryClickEvent.setCancelled(true);
 
         if (personalFlower.size() > 8) {
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#EB3349:#F45C43>You already reached the maximum amount of flowers!</gradient>"));
+            languageManager.sendPlayerMessage(player, "gui.flower.message.limit");
             return;
         }
 
