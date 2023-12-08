@@ -24,3 +24,11 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/resources")
+        }
+    }
+}
