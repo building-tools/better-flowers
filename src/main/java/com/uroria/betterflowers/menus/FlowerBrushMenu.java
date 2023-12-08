@@ -148,9 +148,15 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
     }
 
     private void onMaskAdd(InventoryClickEvent inventoryClickEvent) {
+        inventoryClickEvent.setCancelled(true);
 
         final var slot = inventoryClickEvent.getSlot();
-        final var maskItemType = inventoryClickEvent.getCursor().getType();
+        final var maskItem = inventoryClickEvent.getCursor();
+
+        if (maskItem == null || maskItem.getItemMeta() == null) return;
+        if (!maskItem.getType().isBlock() || maskItem.getType() == Material.AIR) return;
+
+        final var maskItemType = maskItem.getType();
         final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
 
         if (flowerGroupData.isEmpty()) return;
@@ -161,6 +167,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
     }
 
     private void onMaskRemove(InventoryClickEvent inventoryClickEvent) {
+        inventoryClickEvent.setCancelled(true);
 
         final var slot = inventoryClickEvent.getSlot();
         final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
