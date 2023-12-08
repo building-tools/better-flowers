@@ -9,16 +9,26 @@ But what does it do?
 - Utilize entire flower groups that consist of various flower types, providing options for diverse and visually appealing designs.
 - Implement the ability to undo one or multiple flower placements, allowing for easy correction of mistakes or experimentation with different arrangements.
 
-# Minecraft-Versions
+# Specs:
 
 ### Supported Minecraft-Versions: 1.20.2
+### Current Java-Version: 17
+### Developed for Paper
 
 # Commands
 ```
 /flower
 ```
-opens the creation-inventory
+opens the inventory to create custom flowers
 + alias: /f
+
+```
+/flowerbrush
+```
+
+opens the inventory to create a brush of custom flowers
+ - alias: /fb
+
 ```
 /undoflower
 ```
@@ -45,8 +55,9 @@ betterflowers.undo
 to undo a flower placement
 
 # Updates
-- [ ] flower-brush 
-- [ ] flower-history
+- [X] flower-brush 
+- [X] flower-history
+- [ ] async context for flower placing 
 ### If you have any ideas to add contact my discord: konfuzius
 # Preview
 
@@ -59,7 +70,7 @@ If open, you can choose a category that contains more specific flowers with diff
 
 If you left-click it will be added without a randomizer. Else it will be added with a randomzier.
 
- - SHERD: Create a flower --> get a flowerpot to place the flower
+ - SHERD: Create a flower --> get a BLAZE_POWDER to place the flower
  - STRUCTURE_VOID: get back to the main menu
  - BARRIER: To remove all selected flowers
  - REDSTONE: To remove the last added flower
@@ -71,3 +82,11 @@ If you left-click it will be added without a randomizer. Else it will be added w
 ![image](https://github.com/raphael-goetz/betterflowers/assets/52959657/9b8b5a56-b4e6-46e8-b88e-902e0dcea8c0)
  - blue glass indicates the selection of a whole flower group that will always will randomly
  - magenta glass indicates the selection of a whole flower group that always will be placed
+
+# Brush-Inventory
+
+Put a flower-placer in the bottom row. If you want to add a mask insert a block on top of the flower-placer. 
+Then the flower will only be placed on the given mask!
+ - SHERD: create a brush --> get a BLAZE_ROD to use the flower brush
+ - ENDER_EYE: to set the range of the brush [1 - 20]
+ - STRUCTURE_VOID: to set the air percentage [0% - 100%]
