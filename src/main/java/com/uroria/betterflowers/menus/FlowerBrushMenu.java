@@ -152,7 +152,6 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         final var slot = inventoryClickEvent.getSlot();
         final var maskItemType = inventoryClickEvent.getCursor().getType();
         final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
-        System.out.println(flowerGroupData.toString());
 
         if (flowerGroupData.isEmpty()) return;
         this.maskData.put(flowerGroupData.get(), maskItemType);
@@ -166,7 +165,6 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         final var slot = inventoryClickEvent.getSlot();
         final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
 
-        System.out.println(flowerGroupData.toString());
         if (flowerGroupData.isEmpty()) return;
         this.maskData.remove(flowerGroupData.get());
         this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
@@ -178,7 +176,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         inventoryClickEvent.setCancelled(true);
 
         final var slot = inventoryClickEvent.getSlot();
-        if (slot >= 26) return Optional.empty();
+        if (slot > 26) return Optional.empty();
 
         final var coherentSlot = slot + 9;
         final var flowerItem = this.inventory.getItem(coherentSlot);
