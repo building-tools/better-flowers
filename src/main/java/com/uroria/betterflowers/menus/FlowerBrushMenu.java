@@ -45,16 +45,28 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
     private void generateOverlay() {
 
-        this.setSlot(0, new ItemBuilder(Material.ECHO_SHARD).setName(languageManager.getComponent("gui.brush.display.item.create")).build(), this::onCreateBrush);
-        this.setSlot(1, new ItemBuilder(Material.ENDER_EYE).setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius))).build(), this::onChangeRadius);
-        this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID).setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer))).build(), this::onChangeAirRandomizer);
+        this.setSlot(0, new ItemBuilder(Material.ECHO_SHARD)
+                .setName(languageManager.getComponent("gui.brush.display.item.create"))
+                .build(), this::onCreateBrush);
+
+        this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
+                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius)))
+                .build(), this::onChangeRadius);
+
+        this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
+                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer)))
+                .build(), this::onChangeAirRandomizer);
 
         for (int index = 18; index < 27; index++) {
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.brush.item.display.mask")).build(), this::onMaskAdd);
+            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).
+                    setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                    .build(), this::onMaskAdd);
         }
 
         for (int index = 27; index < 36; index++) {
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.brush.item.display.flower")).build(), this::onFlowerAdd);
+            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                    .setName(languageManager.getComponent("gui.brush.item.display.flower"))
+                    .build(), this::onFlowerAdd);
         }
     }
 
@@ -84,7 +96,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var flowers = flowerManager.getFlowers().get(flowerItem);
         this.flowerGroupData.remove(flowers);
-        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.brush.item.display.placeholder")).build(), this::onFlowerAdd);
+        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                .setName(languageManager.getComponent("gui.brush.item.display.placeholder"))
+                .build(), this::onFlowerAdd);
     }
 
     private void onChangeAirRandomizer(InventoryClickEvent inventoryClickEvent) {
@@ -95,7 +109,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (airRandomizer > 1f) airRandomizer = 1f;
         if (radius < 0f) airRandomizer = 0f;
 
-        this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID).setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer))).build(), this::onChangeAirRandomizer);
+        this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
+                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer)))
+                .build(), this::onChangeAirRandomizer);
     }
 
     private void onChangeRadius(InventoryClickEvent inventoryClickEvent) {
@@ -106,7 +122,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (radius > 20) radius = 20;
         if (radius < 1) radius = 1;
 
-        this.setSlot(1, new ItemBuilder(Material.ENDER_EYE).setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius))).build(), this::onChangeRadius);
+        this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
+                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius)))
+                .build(), this::onChangeRadius);
     }
 
     private void onCreateBrush(InventoryClickEvent inventoryClickEvent) {
@@ -115,7 +133,11 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (flowerGroupData.isEmpty()) return;
         if (radius >= 51) return;
 
-        final var brushItem = new ItemBuilder(Material.BLAZE_ROD).setName(languageManager.getComponent("gui.brush.item.display.brush", "%id%", String.valueOf(System.currentTimeMillis()))).build();
+        final var currentMil = String.valueOf(System.currentTimeMillis());
+        final var brushItem = new ItemBuilder(Material.BLAZE_ROD)
+                .setName(languageManager.getComponent("gui.brush.item.display.brush", "%id%", currentMil))
+                .build();
+
         this.flowerManager.getBrushes().put(brushItem, new BrushData(flowerGroupData, radius, airRandomizer, maskData));
 
         languageManager.sendPlayerMessage(player, "gui.brush.message.create");
@@ -132,7 +154,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         if (flowerGroupData.isEmpty()) return;
         this.maskData.put(flowerGroupData.get(), maskItemType);
-        this.setSlot(slot, new ItemBuilder(maskItemType).setName(languageManager.getComponent("gui.brush.item.display.mask")).build(), this::onMaskRemove);
+        this.setSlot(slot, new ItemBuilder(maskItemType)
+                .setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                .build(), this::onMaskRemove);
     }
 
     private void onMaskRemove(InventoryClickEvent inventoryClickEvent) {
@@ -143,7 +167,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         System.out.println(flowerGroupData.toString());
         if (flowerGroupData.isEmpty()) return;
         this.maskData.remove(flowerGroupData.get());
-        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName(languageManager.getComponent("gui.brush.item.display.mask")).build(), this::onMaskAdd);
+        this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                .setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                .build(), this::onMaskAdd);
     }
 
     private Optional<FlowerGroupData> getFlowerGroupFromMask(InventoryClickEvent inventoryClickEvent) {
