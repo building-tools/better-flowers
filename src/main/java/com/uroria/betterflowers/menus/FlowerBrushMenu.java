@@ -7,6 +7,7 @@ import com.uroria.betterflowers.managers.FlowerManager;
 import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
 import com.uroria.betterflowers.utils.ItemBuilder;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -46,7 +47,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
     private void generateOverlay() {
 
         this.setSlot(0, new ItemBuilder(Material.ECHO_SHARD)
-                .setName(languageManager.getComponent("gui.brush.display.item.create"))
+                .setName(languageManager.getComponent("gui.brush.item.display.create"))
                 .build(), this::onCreateBrush);
 
         this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
