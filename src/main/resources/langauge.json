@@ -19,8 +19,29 @@
   "gui.flower.item.display.flower": "<gradient:#a8ff78:#78ffd6>%flower%</gradient>",
   "gui.flower.item.display.randomizer.yes.yes": "<gradient:#a8ff78:#78ffd6>[RANDOMIZER]</gradient> <gradient:#a8ff78:#78ffd6>[GROUP]</gradient>",
   "gui.flower.item.display.randomizer.yes.no": "<gradient:#a8ff78:#78ffd6>[RANDOMIZER]</gradient> <gradient:#EB3349:#F45C43>[GROUP]</gradient>",
-  "gui.flower.item.display.group.no.yes": " <gradient:#EB3349:#F45C43>[RANDOMIZER]</gradient> <gradient:#a8ff78:#78ffd6>[GROUP]</gradient>",
-  "gui.flower.item.display.group.no.no": " <gradient:#EB3349:#F45C43>[RANDOMIZER]</gradient> <gradient:#EB3349:#F45C43>[GROUP]</gradient>",
+  "gui.flower.item.display.group.no.yes": "<gradient:#EB3349:#F45C43>[RANDOMIZER]</gradient> <gradient:#a8ff78:#78ffd6>[GROUP]</gradient>",
+  "gui.flower.item.display.group.no.no": "<gradient:#EB3349:#F45C43>[RANDOMIZER]</gradient> <gradient:#EB3349:#F45C43>[GROUP]</gradient>",
+
+  "gui.flower.item.lore.flowers": [
+    " ",
+    "<gray> - shift click to add whole group</gray>",
+    "<gray> - shift + left click to add without</gray> <red>randomizer</red>",
+    "<gray> - shift + right click to add</gray> <green>with randomizer</green>"
+  ],
+
+  "gui.flower.item.lore.flower": [
+    " ",
+    "<gray> - left click to add without</gray> <red>randomizer</red>",
+    "<gray> - right click to add</gray> <green>with randomizer</green>"
+  ],
+
+  "gui.flower.item.lore.description": [
+    " ",
+    "<gray>This Flower contains:</gray>",
+    " "
+  ],
+
+  "gui.flower.item.lore.placeholder": "<gray> - %flower%",
 
   "gui.brush.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Brush has been created</gradient>",
   "gui.flower.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Flower has been created</gradient>",
