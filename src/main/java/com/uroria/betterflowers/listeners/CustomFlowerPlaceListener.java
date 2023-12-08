@@ -66,6 +66,7 @@ public final class CustomFlowerPlaceListener implements Listener {
         final var flowers = flowerGroupData.flowerData();
         final var values = flowerManager.getFlowerRandomizer().get(flowerGroupData);
         final var offset = playerLookUp(playerInteractEvent.getPlayer()) ? -1 : 1;
+        if (playerLookUp(playerInteractEvent.getPlayer())) currentLocation.add(0, -1, 0);
 
         for (int i = 0; i < flowers.size(); i++) {
             if (values.get(i) && new Random().nextBoolean()) continue;
