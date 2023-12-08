@@ -9,7 +9,6 @@ import com.uroria.betterflowers.utils.BukkitPlayerInventory;
 import com.uroria.betterflowers.utils.FlowerCollection;
 import com.uroria.betterflowers.data.FlowerData;
 import com.uroria.betterflowers.utils.ItemBuilder;
-import net.kyori.adventure.text.Component;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -160,11 +159,13 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             return;
         }
 
-        final List<String> description = new ArrayList<>();
-        description.add(" ");
-        description.add("<gray>This Flower contains:</gray>");
+        final var currentMil = String.valueOf(System.currentTimeMillis());
+        final var description = new ArrayList<>(List.copyOf(languageManager.getComponents("gui.flower.item.lore.description")));
 
-        personalFlower.forEach(singleFlower -> description.add(" <gray>- " + singleFlower.getDisplay() + "</gray>"));
+        for (var singleFlower : personalFlower) {
+            final var lore = languageManager.getComponent("gui.flower.item.lore.placeholder", "%flower%", singleFlower.getName());
+            description.add(lore);
+        }
 
         //just takes the current system-time as a display name
         final var placer = new ItemBuilder(Material.BLAZE_POWDER)
