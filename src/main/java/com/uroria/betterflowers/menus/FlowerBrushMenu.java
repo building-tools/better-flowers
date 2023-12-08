@@ -106,10 +106,10 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
     private void onChangeAirRandomizer(InventoryClickEvent inventoryClickEvent) {
         inventoryClickEvent.setCancelled(true);
 
-        if (inventoryClickEvent.isLeftClick() && airRandomizer > 1f) airRandomizer += 0.1f;
-        if (inventoryClickEvent.isRightClick() && airRandomizer < 0f) airRandomizer -= 0.1f;
+        if (inventoryClickEvent.isLeftClick()) airRandomizer += 0.1f;
+        if (inventoryClickEvent.isRightClick()) airRandomizer -= 0.1f;
         if (airRandomizer > 1f) airRandomizer = 1f;
-        if (radius < 0f) airRandomizer = 0f;
+        if (airRandomizer < 0f) airRandomizer = 0f;
 
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
                 .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer)))
