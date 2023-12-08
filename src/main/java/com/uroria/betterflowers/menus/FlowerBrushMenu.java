@@ -74,6 +74,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         inventoryClickEvent.setCancelled(true);
 
         final var flowerItem = inventoryClickEvent.getCursor();
+        if (flowerItem.getType() == Material.AIR) return;
         if (flowerItem.getItemMeta() == null || flowerItem.getType() != Material.BLAZE_POWDER) return;
         if (!flowerManager.getFlowers().containsKey(flowerItem)) return;
 
