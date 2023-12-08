@@ -4,6 +4,8 @@
 But what does it do?
 
 - Open an inventory for creating placeable flower patterns.
+- Open an inventory for creating a flower-brush for easier and bigger operations.
+- Undo any unwanted flower-placements of yourself or anyone else.
 - Design flower patterns with a height capability of up to 9 blocks.
 - Introduce a randomization element to decide whether a single flower should be placed or not, adding variety to patterns.
 - Utilize entire flower groups that consist of various flower types, providing options for diverse and visually appealing designs.
