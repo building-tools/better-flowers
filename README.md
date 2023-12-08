@@ -85,6 +85,8 @@ If you left-click it will be added without a randomizer. Else it will be added w
 
 # Brush-Inventory
 
+![image](https://github.com/raphael-goetz/betterflowers/assets/52959657/77a44134-2601-4bc0-9723-2b5410dcbf7f)
+
 Put a flower-placer in the bottom row. If you want to add a mask insert a block on top of the flower-placer. 
 Then the flower will only be placed on the given mask!
  - SHERD: create a brush --> get a BLAZE_ROD to use the flower brush
