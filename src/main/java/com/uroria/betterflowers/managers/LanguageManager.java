@@ -1,15 +1,13 @@
 package com.uroria.betterflowers.managers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public final class LanguageManager {
@@ -46,19 +44,23 @@ public final class LanguageManager {
         return getStringsFromConfig(key).stream().map(string -> MiniMessage.miniMessage().deserialize(string)).toList();
     }
 
-    public void readLangaugeConfig() {
+    private void readLangaugeConfig() {
 
-        final var path =  Bukkit.getPluginsFolder() + "/BetterFlowers/langauge.json";
-        final var languageFile = new File(path);
-
-        if (!languageFile.exists()){
-            return;
-        }
+        final var inputStream = getClass().getClassLoader().getResourceAsStream("language.json");
+        if (inputStream == null) return;
 
         try {
+            final var reader = new BufferedReader(new InputStreamReader(inputStream));
+            final var stringBuilder = new StringBuilder();
 
-            final var reader = JsonParser.parseReader(new FileReader(path));
-            final var jsonFile = reader.getAsJsonObject();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+
+            final var jsonString = stringBuilder.toString();
+            final var jsonFile = new Gson().fromJson(jsonString, JsonObject.class);
 
             jsonFile.keySet().forEach(key -> {
 
@@ -67,7 +69,7 @@ public final class LanguageManager {
 
             });
 
-        } catch (FileNotFoundException exception) {
+        } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
