@@ -1,5 +1,6 @@
 package com.uroria.betterflowers.managers;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -41,11 +42,53 @@ public final class LanguageManager {
         return MiniMessage.miniMessage().deserialize(string);
     }
 
-    /*
     public List<Component> getComponents(String key) {
         return getStringsFromConfig(key).stream().map(string -> MiniMessage.miniMessage().deserialize(string)).toList();
     }
-     */
+
+    public void readLangaugeConfig() {
+
+        final var path =  Bukkit.getPluginsFolder() + "/BetterFlowers/langauge.json";
+        final var languageFile = new File(path);
+
+        if (!languageFile.exists()){
+            return;
+        }
+
+        try {
+
+            final var reader = JsonParser.parseReader(new FileReader(path));
+            final var jsonFile = reader.getAsJsonObject();
+
+            jsonFile.keySet().forEach(key -> {
+
+                final var element = jsonFile.get(key);
+                readConfigData(key, element);
+
+            });
+
+        } catch (FileNotFoundException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    private void readConfigData(String key, JsonElement element) {
+
+        if (element.isJsonArray()) {
+
+            final var list = new ArrayList<String>();
+
+            for(var jsonElement : element.getAsJsonArray().asList()) {
+                list.add(jsonElement.getAsString());
+            }
+
+            this.multiMessage.put(key, list);
+            return;
+        }
+
+        this.singleMessage.put(key, element.getAsString());
+    }
+
 
     private String getStringFromConfig(String key) {
         return this.singleMessage.getOrDefault(key, key);
@@ -55,48 +98,11 @@ public final class LanguageManager {
         return this.singleMessage.getOrDefault(key, optional);
     }
 
-    /*
     private List<String> getStringsFromConfig(String key) {
-        return List.of(key);
+        return this.multiMessage.getOrDefault(key, List.of(key));
     }
 
     private List<String> getStringsFromConfig(String key, List<String> optional) {
-        return optional;
-    }
-     */
-
-    private void readLangaugeConfig() {
-        final var path =  Bukkit.getPluginsFolder() + "\\BetterFlowers\\langauge.json";
-        final var languageFile = new File(path);
-
-        if (!languageFile.exists()){
-            return;
-        }
-
-        try {
-            final var jsonFile = JsonParser.parseReader(new FileReader(path)).getAsJsonObject();
-
-            jsonFile.keySet().forEach(key -> {
-
-                final var element = jsonFile.get(key);
-
-                /*
-                if (element.isJsonArray()) {
-
-                    final var list = new ArrayList<String>();
-                    element.getAsJsonArray().forEach(jsonElement -> list.add(jsonElement.getAsString()));
-
-                    this.multiMessage.put(key, list);
-                    return;
-                }
-                 */
-
-                this.singleMessage.put(key, element.getAsString());
-
-            });
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return this.multiMessage.getOrDefault(key, optional);
     }
 }
