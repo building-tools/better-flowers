@@ -38,7 +38,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
 
         var operationHistories =  betterFlowers.getFlowerManager().getOperationHistory();
 
-        if (!operationHistories.containsKey(undoPlayer.getUniqueId())) {
+        if (!operationHistories.containsKey(undoPlayer.getUniqueId()) || operationHistories.get(undoPlayer.getUniqueId()).isEmpty()) {
             languageManager.sendPlayerMessage(player,"command.undo.nothing");
             return true;
         }
