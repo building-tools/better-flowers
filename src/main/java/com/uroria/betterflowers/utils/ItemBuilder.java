@@ -23,9 +23,9 @@ public final class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder setLore(List<String> strings) {
+    public ItemBuilder setLore(List<Component> components) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.lore(strings.stream().map(string -> MiniMessage.miniMessage().deserialize(string)).toList());
+        itemMeta.lore(components);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
