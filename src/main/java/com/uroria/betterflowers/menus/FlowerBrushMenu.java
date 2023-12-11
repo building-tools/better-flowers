@@ -46,16 +46,19 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
     private void generateOverlay() {
 
+        final var rad = String.valueOf(radius);
+        final var air = String.valueOf(airRandomizer);
+
         this.setSlot(0, new ItemBuilder(Material.ECHO_SHARD)
                 .setName(languageManager.getComponent("gui.brush.item.display.create"))
                 .build(), this::onCreateBrush);
 
         this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
-                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius)))
+                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", rad))
                 .build(), this::onChangeRadius);
 
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
-                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer)))
+                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", air))
                 .build(), this::onChangeAirRandomizer);
 
         for (int index = 18; index < 27; index++) {
@@ -111,8 +114,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (airRandomizer > 1f) airRandomizer = 1f;
         if (airRandomizer < 0f) airRandomizer = 0f;
 
+        final var air = String.valueOf(airRandomizer);
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
-                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", String.valueOf(airRandomizer)))
+                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", air))
                 .build(), this::onChangeAirRandomizer);
     }
 
@@ -124,8 +128,9 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (radius > 20) radius = 20;
         if (radius < 1) radius = 1;
 
+        final var rad = String.valueOf(radius);
         this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
-                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", String.valueOf(radius)))
+                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", rad))
                 .build(), this::onChangeRadius);
     }
 
@@ -153,7 +158,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         final var slot = inventoryClickEvent.getSlot();
         final var maskItem = inventoryClickEvent.getCursor();
 
-        if (maskItem == null || maskItem.getItemMeta() == null) return;
+        if (maskItem.getItemMeta() == null) return;
         if (!maskItem.getType().isBlock() || maskItem.getType() == Material.AIR) return;
 
         final var maskItemType = maskItem.getType();

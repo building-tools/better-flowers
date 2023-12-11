@@ -6,4 +6,6 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
-public record Operation(HashMap<Vector, BlockData> originalBlocks, World world) {}
+public record Operation(HashMap<Vector, BlockData> originalBlocks, World world) {
+
+}

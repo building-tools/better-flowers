@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public final class CustomFlowerBrushListener implements Listener {
+
     private final FlowerManager flowerManager;
     private final List<Block> flowerBlocks;
 
@@ -50,7 +51,7 @@ public final class CustomFlowerBrushListener implements Listener {
         handleRadiusPlacement(playerInteractEvent, oldBlocks, radius, currentLocation, airRandomizer);
         handleFlowerHistory(playerInteractEvent, oldBlocks);
 
-        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
+        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1,0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -117,12 +118,14 @@ public final class CustomFlowerBrushListener implements Listener {
     }
 
     private boolean adjustHeight(Location location) {
-        final var offset = (location.getBlock().getType() == Material.AIR) ? -1 : 1;
+        final var material = location.getBlock().getType();
+        final var offset = (material == Material.AIR) ? -1 : 1;
 
         for (int index = 0; index < 10; index++) {
 
-            final var offsetLocation = new Location(location.getWorld(), location.getX(), location.getY() + (offset * index), location.getZ());
-            if (offsetLocation.getBlock().getType() == Material.AIR || offsetLocation.getBlock().getType() == Material.GRASS) continue;
+            final var y = location.getY() + (offset * index);
+            final var offsetLocation = new Location(location.getWorld(), location.getX(), y, location.getZ());
+            if (material == Material.AIR || material == Material.GRASS) continue;
             if (offsetLocation.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) continue;
             location.setY(offsetLocation.getY() + 1);
             return false;
@@ -131,13 +134,11 @@ public final class CustomFlowerBrushListener implements Listener {
         return true;
     }
 
-    private boolean onCorrectGround(Location location, FlowerGroupData flowerGroupData, Map<FlowerGroupData, Material> maskData) {
+    private boolean onCorrectGround(Location location, FlowerGroupData data, Map<FlowerGroupData, Material> maskData) {
         final var floorType = location.getBlock().getRelative(BlockFace.DOWN).getType();
 
         if (maskData.isEmpty()) return true;
-        if (!maskData.containsKey(flowerGroupData)) return true;
-        if (maskData.get(flowerGroupData) == floorType) return true;
-
-        return false;
+        if (!maskData.containsKey(data)) return true;
+        return maskData.get(data) == floorType;
     }
 }

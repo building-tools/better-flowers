@@ -30,11 +30,13 @@ public enum FlowerCollection {
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:2]", 2),
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:3]", 3),
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:4]", 4)))),
+
     TURTLE_EGG(new FlowerGroup(Material.TURTLE_EGG, "Turtle Egg", List.of(
             new ClusterFlower(Material.TURTLE_EGG, "Turtle Egg [AMOUNT:1]", 1),
             new ClusterFlower(Material.TURTLE_EGG, "Turtle Egg [AMOUNT:2]", 2),
             new ClusterFlower(Material.TURTLE_EGG, "Turtle Egg [AMOUNT:3]", 3),
             new ClusterFlower(Material.TURTLE_EGG, "Turtle Egg [AMOUNT:4]", 4)))),
+
     WHEAT(new FlowerGroup(Material.WHEAT_SEEDS, Material.WHEAT, "Wheat", List.of(
             new AgeFlower(Material.WHEAT_SEEDS, Material.WHEAT, "Wheat [AGE:0]", 0),
             new AgeFlower(Material.WHEAT_SEEDS, Material.WHEAT, "Wheat [AGE:1]", 1),
@@ -45,6 +47,7 @@ public enum FlowerCollection {
             new AgeFlower(Material.WHEAT_SEEDS, Material.WHEAT, "Wheat [AGE:6]", 6),
             new AgeFlower(Material.WHEAT_SEEDS, Material.WHEAT, "Wheat [AGE:7]", 7),
             new DefaultFlower(Material.HAY_BLOCK, "Hay")))),
+
     CARROT(new FlowerGroup(Material.CARROT, "Carrot", List.of(
             new AgeFlower(Material.CARROT, Material.CARROTS, "Carrot [AGE:0]", 0),
             new AgeFlower(Material.CARROT, Material.CARROTS, "Carrot [AGE:1]", 1),
@@ -54,6 +57,7 @@ public enum FlowerCollection {
             new AgeFlower(Material.CARROT, Material.CARROTS, "Carrot [AGE:5]", 5),
             new AgeFlower(Material.CARROT, Material.CARROTS, "Carrot [AGE:6]", 6),
             new AgeFlower(Material.CARROT, Material.CARROTS, "Carrot [AGE:7]", 7)))),
+
     POTATO(new FlowerGroup(Material.POTATO, "Potato", List.of(
             new AgeFlower(Material.POTATO, Material.POTATOES, "Potato [AGE:0]", 0),
             new AgeFlower(Material.POTATO, Material.POTATOES, "Potato [AGE:1]", 1),
@@ -88,6 +92,7 @@ public enum FlowerCollection {
             new AgeFlower(Material.MELON_SEEDS, Material.MELON_STEM, "Melon [AGE:6]", 6),
             new AgeFlower(Material.MELON_SEEDS, Material.MELON_STEM, "Melon [AGE:7]", 7),
             new DefaultFlower(Material.MELON, "Melon")))),
+
     PUMPKIN(new FlowerGroup(Material.PUMPKIN, Material.PUMPKIN_STEM, "Pumpkin", List.of(
             new AgeFlower(Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM, "Pumpkin [AGE:0]", 0),
             new AgeFlower(Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM, "Pumpkin [AGE:1]", 1),
@@ -98,22 +103,26 @@ public enum FlowerCollection {
             new AgeFlower(Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM, "Pumpkin [AGE:6]", 6),
             new AgeFlower(Material.PUMPKIN_SEEDS, Material.PUMPKIN_STEM, "Pumpkin [AGE:7]", 7),
             new DefaultFlower(Material.PUMPKIN, "Pumpkin")))),
+
     BEETROOT(new FlowerGroup(Material.BEETROOT, "Beetroot", List.of(
             new AgeFlower(Material.BEETROOT, Material.BEETROOTS, "Beetroot [AGE:0]", 0),
             new AgeFlower(Material.BEETROOT, Material.BEETROOTS, "Beetroot [AGE:1]", 1),
             new AgeFlower(Material.BEETROOT, Material.BEETROOTS, "Beetroot [AGE:2]", 2),
             new AgeFlower(Material.BEETROOT, Material.BEETROOTS, "Beetroot [AGE:3]", 3)))),
-    TORCHFLOWER(new FlowerGroup(Material.TORCHFLOWER, "Torchflower", List.of(
+
+    TORCH_FLOWER(new FlowerGroup(Material.TORCHFLOWER, "Torchflower", List.of(
             new AgeFlower(Material.TORCHFLOWER_SEEDS, Material.TORCHFLOWER_CROP, "Torchflower Crop [AGE:0]", 0),
             new AgeFlower(Material.TORCHFLOWER_SEEDS, Material.TORCHFLOWER_CROP, "Torchflower Crop [AGE:1]", 1),
             new DefaultFlower(Material.TORCHFLOWER, "Torchflower")))),
-    PITCHERPLANT(new FlowerGroup(Material.PITCHER_PLANT, "Pitcher Plant", List.of(
+
+    PITCHER_PLANT(new FlowerGroup(Material.PITCHER_PLANT, "Pitcher Plant", List.of(
             new AgeFlower(Material.PITCHER_POD, Material.PITCHER_CROP, "Pitcher Crop [AGE:0]", 0),
             new AgeFlower(Material.PITCHER_POD, Material.PITCHER_CROP, "Pitcher Crop [AGE:1]", 1),
             new AgeFlower(Material.PITCHER_POD, Material.PITCHER_CROP, "Pitcher Crop [AGE:2]", 2),
             new AgeFlower(Material.PITCHER_POD, Material.PITCHER_CROP, "Pitcher Crop [AGE:4]", 3),
             new DoubleFlower(Material.PITCHER_PLANT, "Pitcher Plant [BOTTOM]", Bisected.Half.BOTTOM),
             new DoubleFlower(Material.PITCHER_PLANT, "Pitcher Plant [TOP]", Bisected.Half.TOP)))),
+
     DOUBLE(new FlowerGroup(Material.TALL_GRASS, "Double Plants", List.of(
             new DoubleFlower(Material.TALL_GRASS, "Tall Grass [BOTTOM]", Bisected.Half.BOTTOM),
             new DoubleFlower(Material.TALL_GRASS, "Tall Grass [TOP]", Bisected.Half.TOP),
@@ -129,6 +138,7 @@ public enum FlowerCollection {
             new DoubleFlower(Material.PEONY, "Peony [TOP]", Bisected.Half.TOP),
             new DoubleFlower(Material.SMALL_DRIPLEAF, "Small Dripleaf [BOTTOM]", Bisected.Half.BOTTOM),
             new DoubleFlower(Material.SMALL_DRIPLEAF, "Small Dripleaf [TOP]", Bisected.Half.TOP)))),
+
     SAPLINGS(new FlowerGroup(Material.OAK_SAPLING, "Saplings", List.of(
             new DefaultFlower(Material.OAK_SAPLING, "Oak Sapling"),
             new DefaultFlower(Material.SPRUCE_SAPLING, "Spruce Sapling"),
@@ -144,6 +154,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.RED_MUSHROOM, "Red Mushroom"),
             new DefaultFlower(Material.CRIMSON_FUNGUS, "Crimson Fungus"),
             new DefaultFlower(Material.WARPED_FUNGUS, "Warped Fungus")))),
+
     POTTED_SAPLINGS(new FlowerGroup(Material.DECORATED_POT, Material.DECORATED_POT, "Potted Saplings", List.of(
             new DefaultFlower(Material.OAK_SAPLING, Material.POTTED_OAK_SAPLING, "Potted Oak Sapling"),
             new DefaultFlower(Material.SPRUCE_SAPLING, Material.POTTED_SPRUCE_SAPLING, "Potted Spruce Sapling"),
@@ -159,6 +170,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.RED_MUSHROOM, Material.POTTED_RED_MUSHROOM, "Potted Red Mushroom"),
             new DefaultFlower(Material.CRIMSON_FUNGUS, Material.POTTED_CRIMSON_FUNGUS, "Potted Crimson Fungus"),
             new DefaultFlower(Material.WARPED_FUNGUS, Material.POTTED_WARPED_FUNGUS, "Potted Warped Fungus")))),
+
     DEFAULT_FLOWERS(new FlowerGroup(Material.POPPY, "Flowers", List.of(
             new DefaultFlower(Material.FLOWER_POT, "Flower Pot"),
             new DefaultFlower(Material.DECORATED_POT, "Decorated Pot"),
@@ -179,6 +191,7 @@ public enum FlowerCollection {
             new CaveVinePlant(Material.GLOW_BERRIES, Material.CAVE_VINES, "Glow Berries", 0, false),
             new DefaultFlower(Material.WITHER_ROSE, "Wither Rose"),
             new DefaultFlower(Material.SPORE_BLOSSOM, "Spore Blossom")))),
+
     WATER(new FlowerGroup(Material.WATER_BUCKET, "Waterplants", List.of(
             new WaterFlower(Material.HORN_CORAL, "Horn Coral [WATERLOGGED]", true),
             new WaterFlower(Material.HORN_CORAL_FAN, "Horn Coral Fan [WATERLOGGED]", true),
@@ -213,6 +226,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.HANGING_ROOTS, "Hanging Roots"),
             new DefaultFlower(Material.CACTUS, "Cactus"),
             new DefaultFlower(Material.SUGAR_CANE, "Sugar Cane")))),
+
     POTTED_FLOWERS(new FlowerGroup(Material.FLOWER_POT, "Potted Flowers", List.of(
             new DefaultFlower(Material.DANDELION, Material.POTTED_DANDELION, "Potted Dandelion"),
             new DefaultFlower(Material.POPPY, Material.POTTED_POPPY, "Potted Poppy"),
@@ -233,6 +247,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.DEAD_BUSH, Material.POTTED_DEAD_BUSH, "Potted Dead Bush"),
             new DefaultFlower(Material.CACTUS, Material.POTTED_CACTUS, "Potted Cactus"),
             new DefaultFlower(Material.BAMBOO, Material.POTTED_BAMBOO, "Potted Bamboo")))),
+
     FENCE(new FlowerGroup(Material.OAK_FENCE, "Fence", List.of(
             new DefaultFlower(Material.OAK_FENCE, "Oak Fence"),
             new DefaultFlower(Material.SPRUCE_FENCE, "Spruce Fence"),
@@ -249,6 +264,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.END_ROD, "End Rod"),
             new DefaultFlower(Material.LIGHTNING_ROD, "Lightning Rod"),
             new DefaultFlower(Material.CHAIN, "Chain")))),
+
     GLASS(new FlowerGroup(Material.GREEN_STAINED_GLASS, "Glass Pains", List.of(
             new DefaultFlower(Material.WHITE_STAINED_GLASS_PANE, "White Stained Glass Pane"),
             new DefaultFlower(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "Light Gray Stained Glass Pane"),

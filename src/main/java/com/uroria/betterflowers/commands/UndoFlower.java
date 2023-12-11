@@ -36,14 +36,16 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
             if (getPlayer(argument).isPresent()) undoPlayer = getPlayer(argument).get();
         }
 
-        var operationHistories =  betterFlowers.getFlowerManager().getOperationHistory();
+        final var operationHistories =  betterFlowers.getFlowerManager().getOperationHistory();
+        final var uuid = undoPlayer.getUniqueId();
 
-        if (!operationHistories.containsKey(undoPlayer.getUniqueId()) || operationHistories.get(undoPlayer.getUniqueId()).isEmpty()) {
+        if (!operationHistories.containsKey(uuid) || operationHistories.get(uuid).isEmpty()) {
+
             languageManager.sendPlayerMessage(player,"command.undo.nothing");
             return true;
         }
 
-        var history = new ArrayList<>(List.copyOf(operationHistories.get(undoPlayer.getUniqueId())));
+        var history = new ArrayList<>(List.copyOf(operationHistories.get(uuid)));
         var undo = new ArrayList<Operation>();
 
         for (int index = 0; index < undoTimes; index++) {
@@ -56,9 +58,8 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
                 break;
             }
 
-            currentOperation.originalBlocks().forEach((vector, blockData) -> {
-                currentOperation.world().setBlockData(vector.toLocation(currentOperation.world()), blockData);
-            });
+            currentOperation.originalBlocks().forEach((vector, blockData) ->
+                    currentOperation.world().setBlockData(vector.toLocation(currentOperation.world()), blockData));
 
             undo.add(currentOperation);
         }
@@ -74,8 +75,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
         try  {
 
             final var value = Integer.parseInt(string);
-            if (value <= 0) return false;
-            return true;
+            return value > 0;
         }
         catch (NumberFormatException numberFormatException) {
             return false;

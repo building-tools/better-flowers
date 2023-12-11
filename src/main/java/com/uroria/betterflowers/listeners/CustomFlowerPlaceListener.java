@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 public final class CustomFlowerPlaceListener implements Listener {
+
     private final FlowerManager flowerManager;
     private final List<Block> flowerBlocks;
 
