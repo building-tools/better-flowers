@@ -40,7 +40,7 @@ public final class CustomFlowerBrushListener implements Listener {
 
         final var currentLocation = playerInteractEvent.getPlayer().getTargetBlock(null, 200).getLocation();
         if (currentLocation.getBlock().getType() == Material.AIR) return;
-        if (currentLocation.getBlock().getType() != Material.GRASS) currentLocation.add(0, 1,0);
+        if (currentLocation.getBlock().getType() != Material.SHORT_GRASS) currentLocation.add(0, 1,0);
 
         final var oldBlocks = new HashMap<Vector, BlockData>();
         final var item = playerInteractEvent.getItem();
@@ -125,7 +125,7 @@ public final class CustomFlowerBrushListener implements Listener {
 
             final var y = location.getY() + (offset * index);
             final var offsetLocation = new Location(location.getWorld(), location.getX(), y, location.getZ());
-            if (material == Material.AIR || material == Material.GRASS) continue;
+            if (material == Material.AIR || material == Material.SHORT_GRASS) continue;
             if (offsetLocation.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) continue;
             location.setY(offsetLocation.getY() + 1);
             return false;

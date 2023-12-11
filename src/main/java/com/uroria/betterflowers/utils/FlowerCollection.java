@@ -212,8 +212,8 @@ public enum FlowerCollection {
             new WaterFlower(Material.FIRE_CORAL_FAN, "Fire Coral Fan", false),
             new WaterFlower(Material.SEAGRASS, "Seagrass", false)))),
 
-    DEFAULT_VEGETATION(new FlowerGroup(Material.GRASS, "Vegetation", List.of(
-            new DefaultFlower(Material.GRASS, "Grass"),
+    DEFAULT_VEGETATION(new FlowerGroup(Material.SHORT_GRASS, "Vegetation", List.of(
+            new DefaultFlower(Material.SHORT_GRASS, "Grass"),
             new DefaultFlower(Material.FERN, "Fern"),
             new DefaultFlower(Material.DEAD_BUSH, "Dead Bush"),
             new DefaultFlower(Material.CRIMSON_ROOTS, "Crimson Roots"),
