@@ -33,19 +33,19 @@ public final class BetterFlowers extends JavaPlugin {
     private void registerCommands() {
         final var flowerCommand = getCommand("flower");
         if (flowerCommand != null) {
-            flowerCommand.setAliases(List.of("f"));
+            flowerCommand.setAliases(List.of("f", "F"));
             flowerCommand.setExecutor(new Flower(this));
         }
 
         final var flowerBrushCommand = getCommand("flowerbrush");
         if (flowerBrushCommand != null) {
-            flowerBrushCommand.setAliases(List.of("fb"));
+            flowerBrushCommand.setAliases(List.of("fb", "Fb", "fB", "FB"));
             flowerBrushCommand.setExecutor(new FlowerBrush(this));
         }
 
         final var undoFlowerCommand = getCommand("undoflower");
         if (undoFlowerCommand != null) {
-            undoFlowerCommand.setAliases(List.of("uf"));
+            undoFlowerCommand.setAliases(List.of("uf", "Uf", "uF", "UF"));
             undoFlowerCommand.setExecutor(new UndoFlower(this));
         }
     }
