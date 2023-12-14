@@ -3,8 +3,10 @@ package com.uroria.betterflowers.managers;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -19,7 +21,7 @@ public final class LanguageManager {
         this.singleMessage = new HashMap<>();
         this.multiMessage = new HashMap<>();
 
-        readLangaugeConfig();
+        readConfig();
     }
 
     public void sendPlayerMessage(Player player, String key) {
@@ -44,7 +46,7 @@ public final class LanguageManager {
         return getStringsFromConfig(key).stream().map(string -> MiniMessage.miniMessage().deserialize(string)).toList();
     }
 
-    private void readLangaugeConfig() {
+    private void readLangaugeFromResources(String path) {
 
         final var inputStream = getClass().getClassLoader().getResourceAsStream("language.json");
         if (inputStream == null) return;
@@ -69,8 +71,40 @@ public final class LanguageManager {
 
             });
 
+            writeFile(path + "/language.json", jsonString);
+
         } catch (IOException exception) {
             throw new RuntimeException(exception);
+        }
+    }
+
+    private void writeFile(String path, String data) {
+
+        try (var fileWriter = new FileWriter(path)) {
+
+            fileWriter.write(data);
+            fileWriter.flush();
+
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
+        }
+    }
+
+    private void readLanguageFileFromJson(File file)  {
+
+        try {
+
+            final var jsonFile = JsonParser.parseReader(new FileReader(file)).getAsJsonObject();
+
+            jsonFile.keySet().forEach(key -> {
+
+                final var element = jsonFile.get(key);
+                readConfigData(key, element);
+
+            });
+
+        } catch (FileNotFoundException fileNotFoundException) {
+            throw new RuntimeException(fileNotFoundException);
         }
     }
 
@@ -91,6 +125,20 @@ public final class LanguageManager {
         this.singleMessage.put(key, element.getAsString());
     }
 
+    private void readConfig() {
+
+        final var path = Bukkit.getPluginsFolder() + "/BetterFlowers";
+        final var file = new File(path + "/language.json");
+
+        if (!new File(path).mkdir()) return;
+
+        if (file.exists()) {
+            readLanguageFileFromJson(file);
+            return;
+        }
+
+        readLangaugeFromResources(path);
+    }
 
     private String getStringFromConfig(String key) {
         return this.singleMessage.getOrDefault(key, key);
