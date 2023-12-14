@@ -11,11 +11,18 @@ commands:
     description: Opens a menu to create custom flower.
     aliases:
       - f
+      - F
   flowerbrush:
       description: Opens a menu to create flower brush.
       aliases:
         - fb
+        - Fb
+        - fB
+        - FB
   undoflower:
     description: Undo your last placed flower/brush.
     aliases:
       - uf
+      - Uf
+      - uF
+      - UF
