@@ -6,10 +6,12 @@ import com.uroria.betterflowers.flowers.SingleFlower;
 import com.uroria.betterflowers.flowers.placable.FlowerGroup;
 import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
+import com.uroria.betterflowers.utils.CandleCollection;
 import com.uroria.betterflowers.utils.FlowerCollection;
 import com.uroria.betterflowers.data.FlowerData;
 import com.uroria.betterflowers.utils.ItemBuilder;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -123,9 +125,9 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         clearSlots();
         generateFlowerOverlay();
 
-        List<FlowerCollection> flowers = List.copyOf(Arrays.stream(FlowerCollection.values()).toList());
+        final var flowers = List.copyOf(Arrays.stream(FlowerCollection.values()).toList());
 
-        for (int index = 0; index < 28; index++) {
+        for (int index = 1; index < 28; index++) {
 
             if (index >= flowers.size()) break;
 
@@ -135,6 +137,29 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
                             .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%", currentFlowers.getDisplayName()))
                             .setLore(languageManager.getComponents("gui.flower.item.lore.flowers")).build(),
                     inventoryClickEvent -> onCategoryClick(inventoryClickEvent, currentFlowers)
+            );
+        }
+
+        this.setSlot(0, new ItemBuilder(Material.CANDLE).setName(Component.text("Candle Collection")).build(), this::createCandleCategories);
+    }
+
+    private void createCandleCategories(InventoryClickEvent inventoryClickEvent) {
+        inventoryClickEvent.setCancelled(true);
+
+        clearSlots();
+        generateFlowerOverlay();
+
+        final var candles = List.copyOf(Arrays.stream(CandleCollection.values()).toList());
+
+        for (int index = 0; index < 28; index++) {
+
+            if (index >= candles.size()) break;
+            final var currentCandle = candles.get(index).getFlowerGroup();
+
+            setSlot(index, new ItemBuilder(currentCandle.getDisplay())
+                            .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%", currentCandle.getDisplayName()))
+                            .setLore(languageManager.getComponents("gui.flower.item.lore.flowers")).build(),
+                    clickEvent -> onCategoryClick(clickEvent, currentCandle)
             );
         }
     }
