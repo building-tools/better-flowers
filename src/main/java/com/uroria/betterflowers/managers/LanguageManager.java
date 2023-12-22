@@ -130,8 +130,7 @@ public final class LanguageManager {
         final var path = Bukkit.getPluginsFolder() + "/BetterFlowers";
         final var file = new File(path + "/language.json");
 
-        if (!new File(path).mkdir()) return;
-
+        if (new File(path).mkdir()) return;
         if (file.exists()) {
             readLanguageFileFromJson(file);
             return;
