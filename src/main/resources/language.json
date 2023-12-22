@@ -9,6 +9,7 @@
   "gui.brush.item.display.flower": "<gradient:#a8ff78:#78ffd6>Insert Flower</gradient>",
   "gui.brush.item.display.brush": "<gradient:#a8ff78:#78ffd6>ID: %id%</gradient>",
   "gui.brush.item.display.placeholder": " ",
+  "gui.flower.item.display.candle": "<gradient:#a8ff78:#78ffd6>Candle Collection</gradient>",
 
   "gui.flower.item.display.placeholder": " ",
   "gui.flower.item.display.name": "<gradient:#a8ff78:#78ffd6>ID: %id%</gradient>",
