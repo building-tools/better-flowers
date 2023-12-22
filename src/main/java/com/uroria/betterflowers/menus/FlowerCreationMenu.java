@@ -131,7 +131,9 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
             if (index > flowers.size()) break;
             if (index == flowers.size()) {
-                this.setSlot(index, new ItemBuilder(Material.CANDLE).setName(Component.text("Candle Collection")).build(), this::createCandleCategories);
+                this.setSlot(index, new ItemBuilder(Material.CANDLE)
+                        .setName(languageManager.getComponent("gui.flower.item.display.candle")).build(),
+                        this::createCandleCategories);
                 break;
             }
 
