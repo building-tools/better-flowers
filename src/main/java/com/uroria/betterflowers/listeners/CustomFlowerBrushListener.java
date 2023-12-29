@@ -40,7 +40,7 @@ public final class CustomFlowerBrushListener implements Listener {
 
         final var currentLocation = playerInteractEvent.getPlayer().getTargetBlock(null, 200).getLocation();
         if (currentLocation.getBlock().getType() == Material.AIR) return;
-        if (currentLocation.getBlock().getType() != Material.SHORT_GRASS) currentLocation.add(0, 1,0);
+        if (currentLocation.getBlock().getType() != Material.SHORT_GRASS) currentLocation.add(0, 1, 0);
 
         final var oldBlocks = new HashMap<Vector, BlockData>();
         final var item = playerInteractEvent.getItem();
@@ -51,7 +51,7 @@ public final class CustomFlowerBrushListener implements Listener {
         handleRadiusPlacement(playerInteractEvent, oldBlocks, radius, currentLocation, airRandomizer);
         handleFlowerHistory(playerInteractEvent, oldBlocks);
 
-        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1,0);
+        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -64,7 +64,7 @@ public final class CustomFlowerBrushListener implements Listener {
 
         for (var innerLocation : getPlayerCircle(location, radius)) {
             if (air >= new Random().nextFloat()) continue;
-            if (adjustHeight(innerLocation)) continue;
+            if (!adjustHeight(innerLocation)) continue;
             handleFlowerPlacement(playerInteractEvent, oldBlocks, innerLocation);
         }
     }
@@ -95,10 +95,11 @@ public final class CustomFlowerBrushListener implements Listener {
     private Collection<Location> getPlayerCircle(Location location, int radius) {
         final var locations = new ArrayList<Location>();
 
-        for (int x = -radius; x < radius; x++) for (int z = -radius; z < radius; z++) {
-            final var newLocation = new Location(location.getWorld(), location.getX() + x, location.getY(),location.getZ() + z);
-            if (location.distance(newLocation) < radius) locations.add(newLocation);
-        }
+        for (int x = -radius; x < radius; x++)
+            for (int z = -radius; z < radius; z++) {
+                final var newLocation = new Location(location.getWorld(), location.getX() + x, location.getY(), location.getZ() + z);
+                if (location.distance(newLocation) < radius) locations.add(newLocation);
+            }
 
         return locations;
     }
@@ -118,20 +119,25 @@ public final class CustomFlowerBrushListener implements Listener {
     }
 
     private boolean adjustHeight(Location location) {
-        final var material = location.getBlock().getType();
-        final var offset = (material == Material.AIR) ? -1 : 1;
+        final var block = location.getBlock();
 
-        for (int index = 0; index < 10; index++) {
+        for (var index = 0; index < 10; index++) {
 
-            final var y = location.getY() + (offset * index);
-            final var offsetLocation = new Location(location.getWorld(), location.getX(), y, location.getZ());
-            if (material == Material.AIR || material == Material.SHORT_GRASS) continue;
-            if (offsetLocation.getBlock().getRelative(BlockFace.UP).getType() != Material.AIR) continue;
-            location.setY(offsetLocation.getY() + 1);
-            return false;
+            final var y = block.isSolid() ? location.getBlockY() + index : location.getBlockY() - index;
+            final var currentBlock = location.getWorld().getBlockAt(location.getBlockX(), y, location.getBlockZ());
+
+            if (currentBlock.isSolid()) {
+                location.setY(currentBlock.getY() + 1);
+                return true;
+            }
+
+            final var nextBlock = block.isSolid() ? currentBlock.getRelative(BlockFace.UP) : currentBlock.getRelative(BlockFace.DOWN);
+            if (!nextBlock.isSolid()) continue;
+            location.setY(nextBlock.getY() + 1);
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private boolean onCorrectGround(Location location, FlowerGroupData data, Map<FlowerGroupData, Material> maskData) {
