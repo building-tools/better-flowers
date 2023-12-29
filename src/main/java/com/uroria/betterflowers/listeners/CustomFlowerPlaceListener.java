@@ -98,6 +98,6 @@ public final class CustomFlowerPlaceListener implements Listener {
     }
 
     private boolean playerLookUp(Player player) {
-        return player.getPitch() < 0;
+        return player.getPitch() < 0.0F;
     }
 }
