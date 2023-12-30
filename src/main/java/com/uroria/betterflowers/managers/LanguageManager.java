@@ -90,7 +90,7 @@ public final class LanguageManager {
         }
     }
 
-    private void readLanguageFileFromJson(File file)  {
+    private void readLanguageFileFromJson(File file) {
 
         try {
 
@@ -114,7 +114,7 @@ public final class LanguageManager {
 
             final var list = new ArrayList<String>();
 
-            for(var jsonElement : element.getAsJsonArray().asList()) {
+            for (var jsonElement : element.getAsJsonArray().asList()) {
                 list.add(jsonElement.getAsString());
             }
 
@@ -130,13 +130,20 @@ public final class LanguageManager {
         final var path = Bukkit.getPluginsFolder() + "/BetterFlowers";
         final var file = new File(path + "/language.json");
 
-        if (new File(path).mkdir()) return;
-        if (file.exists()) {
-            readLanguageFileFromJson(file);
-            return;
-        }
+        try {
 
-        readLangaugeFromResources(path);
+            if (new File(path).mkdir()) throw new FileNotFoundException();
+
+            if (file.exists()) {
+                readLanguageFileFromJson(file);
+                return;
+            }
+
+            readLangaugeFromResources(path);
+
+        } catch (FileNotFoundException exception) {
+            readLangaugeFromResources(path);
+        }
     }
 
     private String getStringFromConfig(String key) {
