@@ -13,7 +13,7 @@ But what does it do?
 
 # Specs:
 
-### Supported Minecraft-Versions: 1.20.2
+### Supported Minecraft-Version: 1.20.4 (for Version 1.0.1)
 ### Current Java-Version: 17
 ### Developed for Paper
 
