@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -35,7 +36,7 @@ public final class CustomFlowerPlaceListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     private void onCustomFlowerPlaceEvent(PlayerInteractEvent playerInteractEvent) {
 
-        if (playerInteractEvent.getAction().isLeftClick()) return;
+        if (playerInteractEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (playerInteractEvent.getHand() != EquipmentSlot.HAND) return;
         if (!playerInteractEvent.hasItem() || playerInteractEvent.getItem() == null) return;
 
