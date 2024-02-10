@@ -5,8 +5,8 @@
   "gui.brush.item.display.create": "<gradient:#a8ff78:#78ffd6>Create Brush</gradient>",
   "gui.brush.item.display.radius": "<gradient:#a8ff78:#78ffd6>Current Radius: %radius%</gradient>",
   "gui.brush.item.display.air": "<gradient:#a8ff78:#78ffd6>Current Air: %air%</gradient>",
-  "gui.brush.item.display.mask": "<gradient:#a8ff78:#78ffd6>Insert Mask</gradient>",
-  "gui.brush.item.display.flower": "<gradient:#a8ff78:#78ffd6>Insert Flower</gradient>",
+  "gui.brush.item.display.mask": "<gradient:#a8ff78:#78ffd6>Add material to mask!</gradient>",
+  "gui.brush.item.display.flower": "<gradient:#a8ff78:#78ffd6>Add flower to brush!</gradient>",
   "gui.brush.item.display.brush": "<gradient:#a8ff78:#78ffd6>ID: %id%</gradient>",
   "gui.brush.item.display.placeholder": " ",
   "gui.flower.item.display.candle": "<gradient:#a8ff78:#78ffd6>Candle Collection</gradient>",
@@ -30,6 +30,20 @@
     "<gray> - shift + right click to add</gray> <green>with randomizer</green>"
   ],
 
+  "gui.brush.item.mask.lore": [
+    " ",
+    "<gray> | by clicking with a block</gray>",
+    "<gray> | the material will be added to</gray>",
+    "<gray> | the global mask!</gray>"
+  ],
+
+  "gui.brush.item.flower.lore": [
+    " ",
+    "<gray> | by clicking with a flower-item</gray>",
+    "<gray> | the flower will be added to</gray>",
+    "<gray> | the global flower selection!</gray>"
+  ],
+
   "gui.flower.item.lore.flower": [
     " ",
     "<gray> - left click to add without</gray> <red>randomizer</red>",
@@ -44,8 +58,10 @@
 
   "gui.flower.item.lore.placeholder": "<gray> - %flower%",
 
-  "gui.brush.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Brush has been created</gradient>",
-  "gui.flower.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Flower has been created</gradient>",
+  "gui.brush.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Brush has been successfully created!</gradient>",
+  "gui.brush.message.edit": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Brush has been successfully edited!</gradient>",
+  "gui.flower.message.create": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Flower has been successfully created!</gradient>",
+  "gui.flower.message.edit": "<gradient:#a8ff78:#78ffd6>\uD83C\uDF3A Flower has been successfully edited!</gradient>",
   "gui.flower.message.limit": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A You already reached the maximum amount of flowers!</gradient>",
 
   "permission.use.error": "<gradient:#EB3349:#F45C43>\uD83C\uDF3A You dont have enough permission to use open the flower-menu!</gradient>",
