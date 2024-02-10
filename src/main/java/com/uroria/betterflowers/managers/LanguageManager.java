@@ -14,41 +14,34 @@ import java.util.*;
 
 public final class LanguageManager {
 
-    private final Map<String, String> singleMessage;
-    private final Map<String, List<String>> multiMessage;
+    private static final Map<String, String> SINGLE_MESSAGE = new HashMap<>();
+    private static final Map<String, List<String>> MULTI_MESSAGE = new HashMap<>();
 
-    public LanguageManager() {
-        this.singleMessage = new HashMap<>();
-        this.multiMessage = new HashMap<>();
-
-        readConfig();
-    }
-
-    public void sendPlayerMessage(Player player, String key) {
+    public static void sendPlayerMessage(Player player, String key) {
         player.sendMessage(getComponent(key));
     }
 
-    public void sendPlayersMessage(Collection<Player> players, String key) {
+    public static void sendPlayersMessage(Collection<Player> players, String key) {
         players.forEach(player -> sendPlayerMessage(player, key));
     }
 
-    public Component getComponent(String key, String regex, String value) {
+    public static Component getComponent(String key, String regex, String value) {
         final var string = getStringFromConfig(key).replace(regex, value);
         return MiniMessage.miniMessage().deserialize(string);
     }
 
-    public Component getComponent(String key) {
+    public static Component getComponent(String key) {
         final var string = getStringFromConfig(key);
         return MiniMessage.miniMessage().deserialize(string);
     }
 
-    public List<Component> getComponents(String key) {
+    public static List<Component> getComponents(String key) {
         return getStringsFromConfig(key).stream().map(string -> MiniMessage.miniMessage().deserialize(string)).toList();
     }
 
-    private void readLangaugeFromResources(String path) {
+    private static void readLangaugeFromResources(String path) {
 
-        final var inputStream = getClass().getClassLoader().getResourceAsStream("language.json");
+        final var inputStream = LanguageManager.class.getClassLoader().getResourceAsStream("language.json");
         if (inputStream == null) return;
 
         try {
@@ -78,7 +71,7 @@ public final class LanguageManager {
         }
     }
 
-    private void writeFile(String path, String data) {
+    private static void writeFile(String path, String data) {
 
         try (var fileWriter = new FileWriter(path)) {
 
@@ -90,7 +83,7 @@ public final class LanguageManager {
         }
     }
 
-    private void readLanguageFileFromJson(File file) {
+    private static void readLanguageFileFromJson(File file) {
 
         try {
 
@@ -108,7 +101,7 @@ public final class LanguageManager {
         }
     }
 
-    private void readConfigData(String key, JsonElement element) {
+    private static void readConfigData(String key, JsonElement element) {
 
         if (element.isJsonArray()) {
 
@@ -118,14 +111,14 @@ public final class LanguageManager {
                 list.add(jsonElement.getAsString());
             }
 
-            this.multiMessage.put(key, list);
+            MULTI_MESSAGE.put(key, list);
             return;
         }
 
-        this.singleMessage.put(key, element.getAsString());
+        SINGLE_MESSAGE.put(key, element.getAsString());
     }
 
-    private void readConfig() {
+    public  static void readConfig() {
 
         final var path = Bukkit.getPluginsFolder() + "/BetterFlowers";
         final var file = new File(path + "/language.json");
@@ -146,19 +139,19 @@ public final class LanguageManager {
         }
     }
 
-    private String getStringFromConfig(String key) {
-        return this.singleMessage.getOrDefault(key, key);
+    private static String getStringFromConfig(String key) {
+        return SINGLE_MESSAGE.getOrDefault(key, key);
     }
 
-    private String getStringFromConfig(String key, String optional) {
-        return this.singleMessage.getOrDefault(key, optional);
+    private static String getStringFromConfig(String key, String optional) {
+        return SINGLE_MESSAGE.getOrDefault(key, optional);
     }
 
-    private List<String> getStringsFromConfig(String key) {
-        return this.multiMessage.getOrDefault(key, List.of(key));
+    private static List<String> getStringsFromConfig(String key) {
+        return MULTI_MESSAGE.getOrDefault(key, List.of(key));
     }
 
-    private List<String> getStringsFromConfig(String key, List<String> optional) {
-        return this.multiMessage.getOrDefault(key, optional);
+    private static List<String> getStringsFromConfig(String key, List<String> optional) {
+        return MULTI_MESSAGE.getOrDefault(key, optional);
     }
 }

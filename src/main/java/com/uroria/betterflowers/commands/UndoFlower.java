@@ -2,6 +2,7 @@ package com.uroria.betterflowers.commands;
 
 import com.uroria.betterflowers.BetterFlowers;
 import com.uroria.betterflowers.data.Operation;
+import com.uroria.betterflowers.managers.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,11 +16,9 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        final var languageManager = betterFlowers.getLanguageManager();
-
         if (!(sender instanceof Player player)) return true;
         if (!player.hasPermission("betterflowers.undo")) {
-            languageManager.sendPlayerMessage(player, "permission.undo.error");
+            LanguageManager.sendPlayerMessage(player, "permission.undo.error");
             return true;
         }
 
@@ -27,7 +26,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
         int undoTimes = 1;
 
         if (args.length > 2) {
-            languageManager.sendPlayerMessage(player, "command.undo.cross");
+            LanguageManager.sendPlayerMessage(player, "command.undo.cross");
             return true;
         }
 
@@ -41,7 +40,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
 
         if (!operationHistories.containsKey(uuid) || operationHistories.get(uuid).isEmpty()) {
 
-            languageManager.sendPlayerMessage(player,"command.undo.nothing");
+            LanguageManager.sendPlayerMessage(player,"command.undo.nothing");
             return true;
         }
 
@@ -54,7 +53,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
             var currentOperation = history.get((history.size() - index) - 1);
 
             if (currentOperation.world() == null) {
-                languageManager.sendPlayerMessage(player,"command.undo.wrong.world");
+                LanguageManager.sendPlayerMessage(player,"command.undo.wrong.world");
                 break;
             }
 
@@ -66,7 +65,7 @@ public record UndoFlower(BetterFlowers betterFlowers) implements CommandExecutor
 
         history.removeAll(undo);
         operationHistories.put(undoPlayer.getUniqueId(), history);
-        languageManager.sendPlayerMessage(player,"command.undo.successful");
+        LanguageManager.sendPlayerMessage(player,"command.undo.successful");
         return false;
     }
 

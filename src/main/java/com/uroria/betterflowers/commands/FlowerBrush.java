@@ -1,6 +1,7 @@
 package com.uroria.betterflowers.commands;
 
 import com.uroria.betterflowers.BetterFlowers;
+import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.menus.FlowerBrushMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,11 +16,11 @@ public record FlowerBrush(BetterFlowers betterFlowers) implements CommandExecuto
 
         if (!(sender instanceof Player player)) return true;
         if (!player.hasPermission("betterflowers.use")) {
-            betterFlowers.getLanguageManager().sendPlayerMessage(player, "permission.use.error");
+            LanguageManager.sendPlayerMessage(player, "permission.use.error");
             return true;
         }
 
-        new FlowerBrushMenu(betterFlowers, player).open();
+        new FlowerBrushMenu(betterFlowers, player, false).open();
         return false;
     }
 }

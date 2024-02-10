@@ -3,8 +3,7 @@ package com.uroria.betterflowers;
 import com.uroria.betterflowers.commands.Flower;
 import com.uroria.betterflowers.commands.FlowerBrush;
 import com.uroria.betterflowers.commands.UndoFlower;
-import com.uroria.betterflowers.listeners.CustomFlowerBrushListener;
-import com.uroria.betterflowers.listeners.CustomFlowerPlaceListener;
+import com.uroria.betterflowers.listeners.*;
 import com.uroria.betterflowers.managers.FlowerManager;
 import com.uroria.betterflowers.managers.LanguageManager;
 import lombok.Getter;
@@ -17,15 +16,16 @@ import java.util.List;
 public final class BetterFlowers extends JavaPlugin {
 
     private final FlowerManager flowerManager;
-    private final LanguageManager languageManager;
 
     public BetterFlowers() {
         this.flowerManager = new FlowerManager();
-        this.languageManager = new LanguageManager();
     }
 
     @Override
     public void onEnable() {
+
+        LanguageManager.readConfig();
+
         registerCommands();
         registerListener();
     }
@@ -51,7 +51,12 @@ public final class BetterFlowers extends JavaPlugin {
     }
 
     private void registerListener() {
-        Bukkit.getPluginManager().registerEvents(new CustomFlowerPlaceListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new CustomFlowerBrushListener(this), this);
+
+        final var pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new FlowerToolInteractionListener(this), this);
+        pluginManager.registerEvents(new FlowerPlacerOpenListener(this), this);
+        pluginManager.registerEvents(new FlowerPlacerUseListener(this), this);
+        pluginManager.registerEvents(new FlowerBrushOpenListener(this), this);
+        pluginManager.registerEvents(new FlowerBrushUseListener(this), this);
     }
 }
