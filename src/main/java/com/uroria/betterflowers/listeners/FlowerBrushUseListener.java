@@ -3,6 +3,8 @@ package com.uroria.betterflowers.listeners;
 import com.uroria.betterflowers.BetterFlowers;
 import com.uroria.betterflowers.data.FlowerGroupData;
 import com.uroria.betterflowers.data.Operation;
+import com.uroria.betterflowers.events.FlowerBrushInteractionEvent;
+import com.uroria.betterflowers.events.types.FlowerInteractionTypes;
 import com.uroria.betterflowers.managers.FlowerManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,44 +16,33 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public final class CustomFlowerBrushListener implements Listener {
+public final class FlowerBrushUseListener implements Listener {
 
     private final FlowerManager flowerManager;
     private final List<Block> flowerBlocks;
 
-    public CustomFlowerBrushListener(BetterFlowers betterFlowers) {
+    public FlowerBrushUseListener(BetterFlowers betterFlowers) {
         this.flowerManager = betterFlowers.getFlowerManager();
         this.flowerBlocks = new ArrayList<>();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    private void onCustomFlowerPlaceEvent(PlayerInteractEvent playerInteractEvent) {
-
-        if (playerInteractEvent.getAction().isLeftClick()) return;
-        if (playerInteractEvent.getHand() != EquipmentSlot.HAND) return;
-        if (!playerInteractEvent.hasItem() || playerInteractEvent.getItem() == null) return;
-        if (playerInteractEvent.getItem().getType() != Material.BLAZE_ROD) return;
-
-        final var currentLocation = playerInteractEvent.getPlayer().getTargetBlock(null, 200).getLocation();
-        if (currentLocation.getBlock().getType() == Material.AIR) return;
-        if (currentLocation.getBlock().getType() != Material.SHORT_GRASS) currentLocation.add(0, 1, 0);
+    private void onFlowerBrushInteractionEvent(FlowerBrushInteractionEvent flowerBrushInteractionEvent) {
+        if (flowerBrushInteractionEvent.getFlowerTool() != FlowerInteractionTypes.USE) return;
 
         final var oldBlocks = new HashMap<Vector, BlockData>();
-        final var item = playerInteractEvent.getItem();
+        final var radius = flowerBrushInteractionEvent.getBrushData().radius();
+        final var airRandomizer = flowerBrushInteractionEvent.getBrushData().airRandomizer();
+        final var interactionPoint = flowerBrushInteractionEvent.getInteractionPoint();
 
-        if (!flowerManager.getBrushes().containsKey(item)) return;
-        final var radius = flowerManager.getBrushes().get(item).radius();
-        final var airRandomizer = flowerManager.getBrushes().get(item).airRandomizer();
-        handleRadiusPlacement(playerInteractEvent, oldBlocks, radius, currentLocation, airRandomizer);
-        handleFlowerHistory(playerInteractEvent, oldBlocks);
+        handleRadiusPlacement(flowerBrushInteractionEvent, oldBlocks, radius, interactionPoint, airRandomizer);
+        handleFlowerHistory(flowerBrushInteractionEvent, oldBlocks);
 
-        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
+        flowerBrushInteractionEvent.getPlayer().playSound(interactionPoint, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -60,25 +51,23 @@ public final class CustomFlowerBrushListener implements Listener {
         if (flowerBlocks.contains(currentBlock)) blockPhysicsEvent.setCancelled(true);
     }
 
-    private void handleRadiusPlacement(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks, int radius, Location location, float air) {
+    private void handleRadiusPlacement(FlowerBrushInteractionEvent flowerBrushInteractionEvent, HashMap<Vector, BlockData> oldBlocks, int radius, Location location, float air) {
 
         for (var innerLocation : getPlayerCircle(location, radius)) {
             if (air >= new Random().nextFloat()) continue;
             if (!adjustHeight(innerLocation)) continue;
-            handleFlowerPlacement(playerInteractEvent, oldBlocks, innerLocation);
+            handleFlowerPlacement(flowerBrushInteractionEvent, oldBlocks, innerLocation);
         }
     }
 
-    private void handleFlowerPlacement(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
+    private void handleFlowerPlacement(FlowerBrushInteractionEvent flowerBrushInteractionEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
 
-        final var item = playerInteractEvent.getItem();
-        final var flowerBrush = flowerManager.getBrushes().get(item);
-        final var flowerOptions = flowerBrush.flowerGroupData();
+        final var flowerOptions = flowerBrushInteractionEvent.getBrushData().flowerGroupData();
         final var flowerGroup = flowerOptions.get(new Random().nextInt(flowerOptions.size()));
         final var flowers = flowerGroup.flowerData();
-        final var values = flowerManager.getFlowerRandomizer().get(flowerGroup);
+        final var values = flowerGroup.randomizer();
 
-        if (!onCorrectGround(currentLocation, flowerGroup, flowerBrush.maskData())) return;
+        if (!onCorrectGround(currentLocation, flowerGroup, flowerBrushInteractionEvent.getBrushData().globalMasks())) return;
 
         for (int i = 0; i < flowers.size(); i++) {
             if (values.get(i) && new Random().nextBoolean()) continue;
@@ -104,9 +93,9 @@ public final class CustomFlowerBrushListener implements Listener {
         return locations;
     }
 
-    private void handleFlowerHistory(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks) {
+    private void handleFlowerHistory(FlowerBrushInteractionEvent flowerBrushInteractionEvent, HashMap<Vector, BlockData> oldBlocks) {
 
-        final var player = playerInteractEvent.getPlayer();
+        final var player = flowerBrushInteractionEvent.getPlayer();
         final var uuid = player.getUniqueId();
         final var history = new Operation(oldBlocks, player.getWorld());
 
@@ -140,11 +129,10 @@ public final class CustomFlowerBrushListener implements Listener {
         return false;
     }
 
-    private boolean onCorrectGround(Location location, FlowerGroupData data, Map<FlowerGroupData, Material> maskData) {
+    private boolean onCorrectGround(Location location, FlowerGroupData data, List<Material> globalMasks) {
         final var floorType = location.getBlock().getRelative(BlockFace.DOWN).getType();
 
-        if (maskData.isEmpty()) return true;
-        if (!maskData.containsKey(data)) return true;
-        return maskData.get(data) == floorType;
+        if (globalMasks.isEmpty()) return true;
+        return (globalMasks.contains(floorType));
     }
 }

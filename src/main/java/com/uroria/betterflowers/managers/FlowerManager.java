@@ -15,13 +15,11 @@ public final class FlowerManager {
 
     private final Map<ItemStack, FlowerGroupData> flowers;
     private final Map<ItemStack, BrushData> brushes;
-    private final Map<FlowerGroupData, List<Boolean>> flowerRandomizer;
     private final Map<UUID, List<Operation>> operationHistory;
 
     public FlowerManager() {
         this.flowers = new HashMap<>();
         this.brushes = new HashMap<>();
-        this.flowerRandomizer = new HashMap<>();
         this.operationHistory = new HashMap<>();
     }
 }

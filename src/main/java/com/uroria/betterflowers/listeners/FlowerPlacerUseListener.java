@@ -2,9 +2,10 @@ package com.uroria.betterflowers.listeners;
 
 import com.uroria.betterflowers.BetterFlowers;
 import com.uroria.betterflowers.data.Operation;
+import com.uroria.betterflowers.events.FlowerPlacerInteractionEvent;
+import com.uroria.betterflowers.events.types.FlowerInteractionTypes;
 import com.uroria.betterflowers.managers.FlowerManager;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -12,10 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -23,34 +21,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public final class CustomFlowerPlaceListener implements Listener {
+public final class FlowerPlacerUseListener implements Listener {
 
     private final FlowerManager flowerManager;
     private final List<Block> flowerBlocks;
 
-    public CustomFlowerPlaceListener(BetterFlowers betterFlowers) {
+    public FlowerPlacerUseListener(BetterFlowers betterFlowers) {
         this.flowerManager = betterFlowers.getFlowerManager();
         this.flowerBlocks = new ArrayList<>();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    private void onCustomFlowerPlaceEvent(PlayerInteractEvent playerInteractEvent) {
+    private void onFlowerPlacerInteractionEvent(FlowerPlacerInteractionEvent flowerPlacerInteractionEvent) {
+        if (flowerPlacerInteractionEvent.getFlowerTool() != FlowerInteractionTypes.USE) return;
+        System.out.println("Called Event");
 
-        if (playerInteractEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (playerInteractEvent.getHand() != EquipmentSlot.HAND) return;
-        if (!playerInteractEvent.hasItem() || playerInteractEvent.getItem() == null) return;
-
-        if (playerInteractEvent.getItem().getType() != Material.BLAZE_POWDER) return;
-        if (playerInteractEvent.getClickedBlock() == null) return;
-        if (playerInteractEvent.getInteractionPoint() == null) return;
-
-        final var currentLocation = playerInteractEvent.getInteractionPoint();
+        final var player = flowerPlacerInteractionEvent.getPlayer();
+        final var interactionPoint = flowerPlacerInteractionEvent.getInteractionPoint();
         final var oldBlocks = new HashMap<Vector, BlockData>();
 
-        handleFlowerPlacement(playerInteractEvent, oldBlocks, currentLocation);
-        handleFlowerHistory(playerInteractEvent, oldBlocks);
-
-        playerInteractEvent.getPlayer().playSound(currentLocation, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
+        handleFlowerPlacement(flowerPlacerInteractionEvent, oldBlocks, interactionPoint);
+        handleFlowerHistory(flowerPlacerInteractionEvent, oldBlocks);
+        player.playSound(interactionPoint, Sound.BLOCK_AMETHYST_BLOCK_RESONATE, 1, 0);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -59,16 +51,14 @@ public final class CustomFlowerPlaceListener implements Listener {
         if (flowerBlocks.contains(currentBlock)) blockPhysicsEvent.setCancelled(true);
     }
 
-    private void handleFlowerPlacement(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
+    private void handleFlowerPlacement(FlowerPlacerInteractionEvent flowerPlacerInteractionEvent, HashMap<Vector, BlockData> oldBlocks, Location currentLocation) {
 
-        final var item = playerInteractEvent.getItem();
-        if (!flowerManager.getFlowers().containsKey(item)) return;
-
-        final var flowerGroupData = flowerManager.getFlowers().get(item);
+        final var player = flowerPlacerInteractionEvent.getPlayer();
+        final var flowerGroupData = flowerPlacerInteractionEvent.getFlowerGroupData();
         final var flowers = flowerGroupData.flowerData();
-        final var values = flowerManager.getFlowerRandomizer().get(flowerGroupData);
-        final var offset = playerLookUp(playerInteractEvent.getPlayer()) ? -1 : 1;
-        if (playerLookUp(playerInteractEvent.getPlayer())) currentLocation.add(0, -1, 0);
+        final var values = flowerGroupData.randomizer();
+        final var offset = playerLookUp(player) ? -1 : 1;
+        if (playerLookUp(player)) currentLocation.add(0, -1, 0);
 
         for (int i = 0; i < flowers.size(); i++) {
             if (values.get(i) && new Random().nextBoolean()) continue;
@@ -82,13 +72,10 @@ public final class CustomFlowerPlaceListener implements Listener {
         }
     }
 
-    private void handleFlowerHistory(PlayerInteractEvent playerInteractEvent, HashMap<Vector, BlockData> oldBlocks) {
+    private void handleFlowerHistory(FlowerPlacerInteractionEvent flowerPlacerInteractionEvent, HashMap<Vector, BlockData> oldBlocks) {
 
-        final var location = playerInteractEvent.getClickedBlock();
-        if (location == null) return;
-
-        final var history = new Operation(oldBlocks, playerInteractEvent.getClickedBlock().getWorld());
-        final var uuid = playerInteractEvent.getPlayer().getUniqueId();
+        final var history = new Operation(oldBlocks, flowerPlacerInteractionEvent.getInteractionPoint().getWorld());
+        final var uuid = flowerPlacerInteractionEvent.getPlayer().getUniqueId();
 
         if (flowerManager.getOperationHistory().containsKey(uuid)) {
             var copy = new ArrayList<>(List.copyOf(flowerManager.getOperationHistory().get(uuid)));
