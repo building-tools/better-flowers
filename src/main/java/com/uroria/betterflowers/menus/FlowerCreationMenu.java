@@ -1,6 +1,7 @@
 package com.uroria.betterflowers.menus;
 
 import com.uroria.betterflowers.BetterFlowers;
+import com.uroria.betterflowers.data.FlowerData;
 import com.uroria.betterflowers.data.FlowerGroupData;
 import com.uroria.betterflowers.flowers.SingleFlower;
 import com.uroria.betterflowers.flowers.placable.FlowerGroup;
@@ -8,11 +9,7 @@ import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
 import com.uroria.betterflowers.utils.CandleCollection;
 import com.uroria.betterflowers.utils.FlowerCollection;
-import com.uroria.betterflowers.data.FlowerData;
 import com.uroria.betterflowers.utils.ItemBuilder;
-
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -25,7 +22,6 @@ import java.util.List;
 
 public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
-    private final LanguageManager languageManager;
     private final List<FlowerData> personalFlower;
     private final List<Boolean> isGroup;
     private final List<Boolean> randomizer;
@@ -35,32 +31,61 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
     private final ItemStack wholeCategoryRan;
     private final ItemStack wholeCategory;
     private final BetterFlowers betterFlowers;
+    private final boolean isEditing;
 
-    public FlowerCreationMenu(Player player, BetterFlowers betterFlowers) {
-        super(betterFlowers.getLanguageManager().getComponent("gui.flower.title"), 6);
+    public FlowerCreationMenu(Player player, BetterFlowers betterFlowers, boolean isEditing) {
+        super(LanguageManager.getComponent("gui.flower.title"), 6);
 
         this.player = player;
         this.betterFlowers = betterFlowers;
-        this.languageManager = betterFlowers.getLanguageManager();
+        this.isEditing = isEditing;
 
         this.personalFlower = new ArrayList<>();
         this.randomizer = new ArrayList<>();
         this.isGroup = new ArrayList<>();
 
         this.active = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.flower.item.display.randomizer.yes.no"))
+                .setName(("gui.flower.item.display.randomizer.yes.no"))
                 .build();
 
         this.notActive = new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.flower.item.display.group.no.no"))
+                .setName(("gui.flower.item.display.group.no.no"))
                 .build();
 
         this.wholeCategoryRan = new ItemBuilder(Material.BLUE_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.flower.item.display.randomizer.yes.yes"))
+                .setName(("gui.flower.item.display.randomizer.yes.yes"))
                 .build();
 
         this.wholeCategory = new ItemBuilder(Material.MAGENTA_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.flower.item.display.randomizer.no.yes"))
+                .setName(("gui.flower.item.display.randomizer.no.yes"))
+                .build();
+    }
+
+    public FlowerCreationMenu(Player player, BetterFlowers betterFlowers, FlowerGroupData flowerGroupData, boolean isEditing) {
+        super(LanguageManager.getComponent("gui.flower.title"), 6);
+
+        this.player = player;
+        this.betterFlowers = betterFlowers;
+
+        this.personalFlower = new ArrayList<>(flowerGroupData.flowerData());
+        this.randomizer = new ArrayList<>(flowerGroupData.randomizer());
+        this.isGroup = new ArrayList<>(flowerGroupData.isGroup());
+        this.isEditing = isEditing;
+
+        this.active = new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
+                .setName(("gui.flower.item.display.randomizer.yes.no"))
+                .build();
+
+        this.notActive = new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
+                .setName(("gui.flower.item.display.group.no.no"))
+                .build();
+
+        this.wholeCategoryRan = new ItemBuilder(Material.BLUE_STAINED_GLASS_PANE)
+                .setName(("gui.flower.item.display.randomizer.yes.yes"))
+                .build();
+
+        this.wholeCategory = new ItemBuilder(Material.MAGENTA_STAINED_GLASS_PANE)
+                .setName(("gui.flower.item.display.randomizer.no.yes"))
                 .build();
     }
 
@@ -78,15 +103,15 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
 
     private void generateFlowerOverlay() {
 
-        //generates placeholder
+        final var empty = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                .setName(("gui.flower.item.display.placeholder"))
+                .build();
+
         for (var index = 27; index < 54; index++) {
             if (index >= 36 && index <= 44) continue;
-            this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                    .setName(languageManager.getComponent("gui.flower.item.display.placeholder"))
-                    .build(), this::cancelClick);
+            this.setSlot(index, empty, this::cancelClick);
         }
 
-        //generates the display for the randomizer
         for (var index = 0; index < 9; index++) {
             if (index >= randomizer.size() || index >= isGroup.size()) break;
             if (isGroup.get(index) && randomizer.get(index)) setSlot(45 + index, wholeCategoryRan, this::cancelClick);
@@ -95,29 +120,28 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             if (!isGroup.get(index) && !randomizer.get(index)) setSlot((45 + index), notActive, this::cancelClick);
         }
 
-        //generates the chosen list of flowers to display the current flower list
         for (var index = 0; index < personalFlower.size(); index++) {
             final var singleFlower = personalFlower.get(index);
 
             setSlot((36 + index), new ItemBuilder(singleFlower.getDisplay())
-                    .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%",singleFlower.getName() + " ID " + index))
+                    .setName("gui.flower.item.display.flower", "%flower%", singleFlower.getName() + " ID " + index)
                     .build(), this::cancelClick);
         }
 
         setSlot(29, new ItemBuilder(Material.ECHO_SHARD)
-                .setName(languageManager.getComponent("gui.flower.item.display.create"))
+                .setName(("gui.flower.item.display.create"))
                 .build(), this::onCreateClick);
 
         setSlot(30, new ItemBuilder(Material.STRUCTURE_VOID)
-                .setName(languageManager.getComponent("gui.flower.item.display.back"))
+                .setName(("gui.flower.item.display.back"))
                 .build(), this::onBackClick);
 
         setSlot(32, new ItemBuilder(Material.BARRIER)
-                .setName(languageManager.getComponent("gui.flower.item.display.delete"))
+                .setName(("gui.flower.item.display.delete"))
                 .build(), this::onDeleteClick);
 
         setSlot(33, new ItemBuilder(Material.REDSTONE)
-                .setName(languageManager.getComponent("gui.flower.item.display.remove"))
+                .setName(("gui.flower.item.display.remove"))
                 .build(), this::onRemoveClick);
     }
 
@@ -133,7 +157,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             if (index > flowers.size()) break;
             if (index == flowers.size()) {
                 this.setSlot(index, new ItemBuilder(Material.CANDLE)
-                        .setName(languageManager.getComponent("gui.flower.item.display.candle")).build(),
+                                .setName(("gui.flower.item.display.candle")).build(),
                         this::createCandleCategories);
                 break;
             }
@@ -141,8 +165,8 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             final var currentFlowers = flowers.get(index).getFlowerGroup();
 
             setSlot(index, new ItemBuilder(currentFlowers.getDisplay())
-                            .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%", currentFlowers.getDisplayName()))
-                            .setLore(languageManager.getComponents("gui.flower.item.lore.flowers")).build(),
+                            .setName("gui.flower.item.display.flower", "%flower%", currentFlowers.getDisplayName())
+                            .setLore(("gui.flower.item.lore.flowers")).build(),
                     inventoryClickEvent -> onCategoryClick(inventoryClickEvent, currentFlowers)
             );
         }
@@ -162,8 +186,8 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             final var currentCandle = candles.get(index).getFlowerGroup();
 
             setSlot(index, new ItemBuilder(currentCandle.getDisplay())
-                            .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%", currentCandle.getDisplayName()))
-                            .setLore(languageManager.getComponents("gui.flower.item.lore.flowers")).build(),
+                            .setName("gui.flower.item.display.flower", "%flower%", currentCandle.getDisplayName())
+                            .setLore(("gui.flower.item.lore.flowers")).build(),
                     clickEvent -> onCategoryClick(clickEvent, currentCandle)
             );
         }
@@ -179,11 +203,11 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             if (index >= flowerGroup.getFlowers().size()) break;
 
             final var singleFlower = flowerGroup.getFlowers().get(index);
+            final var item = new ItemBuilder(singleFlower.getDisplay())
+                    .setName("gui.flower.item.display.flower", "%flower%", singleFlower.getDisplayName())
+                    .setLore(("gui.flower.item.lore.flower")).build();
 
-            setSlot(index, new ItemBuilder(singleFlower.getDisplay())
-                            .setName(languageManager.getComponent("gui.flower.item.display.flower", "%flower%", singleFlower.getDisplayName()))
-                            .setLore(languageManager.getComponents("gui.flower.item.lore.flower")).build(),
-                    inventoryClickEvent -> onSubCategoryClick(inventoryClickEvent, singleFlower)
+            setSlot(index, item, inventoryClickEvent -> onSubCategoryClick(inventoryClickEvent, singleFlower)
             );
         }
     }
@@ -200,25 +224,32 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
             return;
         }
 
+        if (isEditing) {
+            final var placer = player.getInventory().getItemInMainHand();
+            final var flowerGroupData = new FlowerGroupData(List.copyOf(personalFlower), List.copyOf(randomizer), List.copyOf(isGroup));
+            betterFlowers.getFlowerManager().getFlowers().put(placer, flowerGroupData);
+            LanguageManager.sendPlayerMessage(player, "gui.flower.message.edit");
+            player.getInventory().close();
+            return;
+        }
+
         final var currentMil = String.valueOf(System.currentTimeMillis());
-        final var description = new ArrayList<>(List.copyOf(languageManager.getComponents("gui.flower.item.lore.description")));
+        final var description = new ArrayList<>(List.copyOf(LanguageManager.getComponents("gui.flower.item.lore.description")));
 
         for (var singleFlower : personalFlower) {
-            final var lore = languageManager.getComponent("gui.flower.item.lore.placeholder", "%flower%", singleFlower.getName());
+            final var lore = LanguageManager.getComponent("gui.flower.item.lore.placeholder", "%flower%", singleFlower.getName());
             description.add(lore);
         }
 
-        //just takes the current system-time as a display name
         final var placer = new ItemBuilder(Material.BLAZE_POWDER)
-                .setName(languageManager.getComponent("gui.flower.item.display.name", "%id%", currentMil))
+                .setName("gui.flower.item.display.name", "%id%", currentMil)
                 .setLore(description).build();
 
         player.getInventory().addItem(placer);
-        languageManager.sendPlayerMessage(player, "gui.flower.message.create");
+        LanguageManager.sendPlayerMessage(player, "gui.flower.message.create");
 
-        final var flowerGroupData = new FlowerGroupData(List.copyOf(personalFlower));
+        final var flowerGroupData = new FlowerGroupData(List.copyOf(personalFlower), List.copyOf(randomizer), List.copyOf(isGroup));
         betterFlowers.getFlowerManager().getFlowers().put(placer, flowerGroupData);
-        betterFlowers.getFlowerManager().getFlowerRandomizer().put(flowerGroupData, List.copyOf(randomizer));
 
         player.getInventory().close();
     }
@@ -260,7 +291,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         }
 
         if (personalFlower.size() > 8) {
-            languageManager.sendPlayerMessage(player, "gui.flower.message.limit");
+            LanguageManager.sendPlayerMessage(player, "gui.flower.message.limit");
             return;
         }
 
@@ -277,7 +308,7 @@ public final class FlowerCreationMenu extends BukkitPlayerInventory {
         inventoryClickEvent.setCancelled(true);
 
         if (personalFlower.size() > 8) {
-            languageManager.sendPlayerMessage(player, "gui.flower.message.limit");
+            LanguageManager.sendPlayerMessage(player, "gui.flower.message.limit");
             return;
         }
 

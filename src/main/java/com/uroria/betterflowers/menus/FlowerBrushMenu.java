@@ -7,35 +7,50 @@ import com.uroria.betterflowers.managers.FlowerManager;
 import com.uroria.betterflowers.managers.LanguageManager;
 import com.uroria.betterflowers.utils.BukkitPlayerInventory;
 import com.uroria.betterflowers.utils.ItemBuilder;
-
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
 public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
     private final FlowerManager flowerManager;
-    private final LanguageManager languageManager;
-    private final Map<FlowerGroupData, Material> maskData;
+    private final List<Material> globalMasks;
     private final List<FlowerGroupData> flowerGroupData;
     private final Player player;
-
+    private final boolean isEditing;
     private int radius;
     private float airRandomizer;
 
-    public FlowerBrushMenu(BetterFlowers betterFlowers, Player player) {
-        super(betterFlowers.getLanguageManager().getComponent("gui.brush.title"), 4);
+    public FlowerBrushMenu(BetterFlowers betterFlowers, Player player, boolean isEditing) {
+        super(LanguageManager.getComponent("gui.brush.title"), 4);
 
         this.flowerManager = betterFlowers.getFlowerManager();
-        this.languageManager = betterFlowers.getLanguageManager();
+        this.isEditing = isEditing;
         this.flowerGroupData = new ArrayList<>();
-        this.maskData = new HashMap<>();
+        this.globalMasks = new ArrayList<>();
 
         this.player = player;
         this.radius = 3;
         this.airRandomizer = 0.0f;
+
+        generateOverlay();
+    }
+
+    public FlowerBrushMenu(BetterFlowers betterFlowers, Player player, BrushData brushData, boolean isEditing) {
+        super(LanguageManager.getComponent("gui.brush.title"), 4);
+
+        this.flowerManager = betterFlowers.getFlowerManager();
+        this.flowerGroupData = new ArrayList<>(brushData.flowerGroupData());
+        this.globalMasks = new ArrayList<>(brushData.globalMasks());
+
+        this.player = player;
+        this.isEditing = isEditing;
+        this.radius = brushData.radius();
+        this.airRandomizer = brushData.airRandomizer();
 
         generateOverlay();
     }
@@ -50,27 +65,56 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         final var air = String.valueOf(airRandomizer);
 
         this.setSlot(0, new ItemBuilder(Material.ECHO_SHARD)
-                .setName(languageManager.getComponent("gui.brush.item.display.create"))
+                .setName("gui.brush.item.display.create")
                 .build(), this::onCreateBrush);
 
         this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
-                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", rad))
+                .setName("gui.brush.item.display.radius", "%radius%", rad)
                 .build(), this::onChangeRadius);
 
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
-                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", air))
+                .setName("gui.brush.item.display.air", "%air%", air)
                 .build(), this::onChangeAirRandomizer);
 
         for (int index = 18; index < 27; index++) {
             this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).
-                    setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                    setName("gui.brush.item.display.mask")
+                    .setLore("gui.brush.item.mask.lore")
                     .build(), this::onMaskAdd);
         }
 
         for (int index = 27; index < 36; index++) {
             this.setSlot(index, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                    .setName(languageManager.getComponent("gui.brush.item.display.flower"))
+                    .setName("gui.brush.item.display.flower")
+                    .setLore("gui.brush.item.flower.lore")
                     .build(), this::onFlowerAdd);
+        }
+
+        fillFlowers();
+    }
+
+    private ItemStack getFlowerItem(FlowerGroupData flowerGroupData) {
+
+        for (var entry : flowerManager.getFlowers().entrySet()) {
+            if (entry.getValue() == flowerGroupData) return entry.getKey();
+        }
+
+        return new ItemBuilder(Material.BARRIER).setName(Component.text("An error occurred")).build();
+    }
+
+    private void fillFlowers() {
+        if (flowerGroupData.isEmpty()) return;
+
+        int index = 0;
+        for (var data : flowerGroupData) {
+            this.setSlot(27 + index, getFlowerItem(data), this::onFlowerRemove);
+            index++;
+        }
+
+        index = 0;
+        for (var mask : globalMasks) {
+            this.setSlot(18 + index, new ItemStack(mask), this::onMaskRemove);
+            index++;
         }
     }
 
@@ -84,6 +128,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var slot = inventoryClickEvent.getSlot();
         final var flowers = flowerManager.getFlowers().get(flowerItem);
+        if (flowerGroupData.contains(flowers)) return;
 
         this.flowerGroupData.add(flowers);
         this.setSlot(slot, flowerItem, this::onFlowerRemove);
@@ -102,7 +147,8 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         final var flowers = flowerManager.getFlowers().get(flowerItem);
         this.flowerGroupData.remove(flowers);
         this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.brush.item.display.placeholder"))
+                .setName("gui.brush.item.display.placeholder")
+                .setLore("gui.brush.item.flower.lore")
                 .build(), this::onFlowerAdd);
     }
 
@@ -116,7 +162,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var air = String.valueOf(airRandomizer);
         this.setSlot(2, new ItemBuilder(Material.STRUCTURE_VOID)
-                .setName(languageManager.getComponent("gui.brush.item.display.air", "%air%", air))
+                .setName("gui.brush.item.display.air", "%air%", air)
                 .build(), this::onChangeAirRandomizer);
     }
 
@@ -130,7 +176,7 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         final var rad = String.valueOf(radius);
         this.setSlot(1, new ItemBuilder(Material.ENDER_EYE)
-                .setName(languageManager.getComponent("gui.brush.item.display.radius", "%radius%", rad))
+                .setName("gui.brush.item.display.radius", "%radius%", rad)
                 .build(), this::onChangeRadius);
     }
 
@@ -140,14 +186,23 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         if (flowerGroupData.isEmpty()) return;
         if (radius >= 51) return;
 
+        if (isEditing) {
+            final var placer = player.getInventory().getItemInMainHand();
+            this.flowerManager.getBrushes().put(placer, new BrushData(flowerGroupData, radius, airRandomizer, globalMasks));
+            LanguageManager.sendPlayerMessage(player, "gui.brush.message.edit");
+            player.getInventory().close();
+            return;
+        }
+
         final var currentMil = String.valueOf(System.currentTimeMillis());
         final var brushItem = new ItemBuilder(Material.BLAZE_ROD)
-                .setName(languageManager.getComponent("gui.brush.item.display.brush", "%id%", currentMil))
+                .setName("gui.brush.item.display.brush", "%id%", currentMil)
+                .setLore("gui.brush.item.mask.lore")
                 .build();
 
-        this.flowerManager.getBrushes().put(brushItem, new BrushData(flowerGroupData, radius, airRandomizer, maskData));
+        this.flowerManager.getBrushes().put(brushItem, new BrushData(flowerGroupData, radius, airRandomizer, globalMasks));
 
-        languageManager.sendPlayerMessage(player, "gui.brush.message.create");
+        LanguageManager.sendPlayerMessage(player, "gui.brush.message.create");
         this.player.getInventory().addItem(brushItem);
         this.player.getInventory().close();
     }
@@ -160,14 +215,13 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
 
         if (maskItem.getItemMeta() == null) return;
         if (!maskItem.getType().isBlock() || maskItem.getType() == Material.AIR) return;
-
         final var maskItemType = maskItem.getType();
-        final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
 
-        if (flowerGroupData.isEmpty()) return;
-        this.maskData.put(flowerGroupData.get(), maskItemType);
+        if (globalMasks.contains(maskItemType)) return;
+        this.globalMasks.add(maskItemType);
         this.setSlot(slot, new ItemBuilder(maskItemType)
-                .setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                .setName("gui.brush.item.display.mask")
+                .setLore("gui.brush.item.mask.lore")
                 .build(), this::onMaskRemove);
     }
 
@@ -175,12 +229,12 @@ public final class FlowerBrushMenu extends BukkitPlayerInventory {
         inventoryClickEvent.setCancelled(true);
 
         final var slot = inventoryClickEvent.getSlot();
-        final var flowerGroupData = getFlowerGroupFromMask(inventoryClickEvent);
+        final var maskItem = this.inventory.getItem(slot);
+        if (maskItem == null || maskItem.getType() == Material.AIR) return;
 
-        if (flowerGroupData.isEmpty()) return;
-        this.maskData.remove(flowerGroupData.get());
+        this.globalMasks.remove(maskItem.getType());
         this.setSlot(slot, new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
-                .setName(languageManager.getComponent("gui.brush.item.display.mask"))
+                .setName(("gui.brush.item.display.mask"))
                 .build(), this::onMaskAdd);
     }
 
