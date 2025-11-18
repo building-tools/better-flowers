@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.uroria"
-    version = "1.1.0"
+    version = "1.2.0"
 }
 
 repositories {
@@ -16,11 +16,11 @@ repositories {
 dependencies {
     implementation("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }

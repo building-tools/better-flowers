@@ -13,8 +13,8 @@ But what does it do?
 
 # Specs:
 
-### Supported Minecraft-Version: 1.20.4 (for Version 1.0.1)
-### Current Java-Version: 17
+### Supported Minecraft-Version: 1.21.10 (for Version 1.2.0)
+### Current Java-Version: 21
 ### Developed for Paper
 
 # Commands
