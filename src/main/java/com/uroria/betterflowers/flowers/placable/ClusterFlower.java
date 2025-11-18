@@ -4,7 +4,7 @@ import com.uroria.betterflowers.flowers.SingleFlower;
 import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.PinkPetals;
+import org.bukkit.block.data.type.FlowerBed;
 import org.bukkit.block.data.type.SeaPickle;
 import org.bukkit.block.data.type.TurtleEgg;
 
@@ -35,10 +35,10 @@ public final class ClusterFlower extends SingleFlower {
             return;
         }
 
-        if (block.getBlockData() instanceof PinkPetals pinkPetals) {
+        if (block.getBlockData() instanceof FlowerBed flowerBed) {
 
-            pinkPetals.setFlowerAmount(this.amount);
-            block.setBlockData(pinkPetals);
+            flowerBed.setFlowerAmount(this.amount);
+            block.setBlockData(flowerBed);
             return;
         }
 

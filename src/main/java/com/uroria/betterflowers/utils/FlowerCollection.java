@@ -25,11 +25,20 @@ public enum FlowerCollection {
             new ClusterFlower(Material.SEA_PICKLE, "Sea Pickles [AMOUNT:3]", 3),
             new ClusterFlower(Material.SEA_PICKLE, "Sea Pickles [AMOUNT:4]", 4)))),
 
-    PINK_FLOWERS(new FlowerGroup(Material.PINK_PETALS, "Pink Flowers", List.of(
+    FLOWER_BED(new FlowerGroup(Material.PINK_PETALS, "Flower Bed", List.of(
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:1]", 1),
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:2]", 2),
             new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:3]", 3),
-            new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:4]", 4)))),
+            new ClusterFlower(Material.PINK_PETALS, "Pink Petals [AMOUNT:4]", 4),
+            new ClusterFlower(Material.WILDFLOWERS, "Wildflowers [AMOUNT:1]", 1),
+            new ClusterFlower(Material.WILDFLOWERS, "Wildflowers [AMOUNT:2]", 2),
+            new ClusterFlower(Material.WILDFLOWERS, "Wildflowers [AMOUNT:3]", 3),
+            new ClusterFlower(Material.WILDFLOWERS, "Wildflowers [AMOUNT:4]", 4),
+            new ClusterFlower(Material.LEAF_LITTER, "Leaf Litter [AMOUNT:1]", 1),
+            new ClusterFlower(Material.LEAF_LITTER, "Leaf Litter [AMOUNT:2]", 2),
+            new ClusterFlower(Material.LEAF_LITTER, "Leaf Litter [AMOUNT:3]", 3),
+            new ClusterFlower(Material.LEAF_LITTER, "Leaf Litter [AMOUNT:4]", 4)
+    ))),
 
     TURTLE_EGG(new FlowerGroup(Material.TURTLE_EGG, "Turtle Egg", List.of(
             new ClusterFlower(Material.TURTLE_EGG, "Turtle Egg [AMOUNT:1]", 1),
@@ -149,6 +158,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.MANGROVE_PROPAGULE, "Mangrove Propagule"),
             new DefaultFlower(Material.CHERRY_SAPLING, "Cherry Sapling"),
             new DefaultFlower(Material.AZALEA, "Azalea"),
+            new DefaultFlower(Material.PALE_OAK_SAPLING, "Pale Oak"),
             new DefaultFlower(Material.FLOWERING_AZALEA, "Flowering Azalea"),
             new DefaultFlower(Material.BROWN_MUSHROOM, "Brown Mushroom"),
             new DefaultFlower(Material.RED_MUSHROOM, "Red Mushroom"),
@@ -169,6 +179,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.BROWN_MUSHROOM, Material.POTTED_BROWN_MUSHROOM, "Potted Brown Mushroom"),
             new DefaultFlower(Material.RED_MUSHROOM, Material.POTTED_RED_MUSHROOM, "Potted Red Mushroom"),
             new DefaultFlower(Material.CRIMSON_FUNGUS, Material.POTTED_CRIMSON_FUNGUS, "Potted Crimson Fungus"),
+            new DefaultFlower(Material.PALE_OAK_SAPLING, Material.POTTED_PALE_OAK_SAPLING, "Potted Pale Oak Sapling"),
             new DefaultFlower(Material.WARPED_FUNGUS, Material.POTTED_WARPED_FUNGUS, "Potted Warped Fungus")))),
 
     DEFAULT_FLOWERS(new FlowerGroup(Material.POPPY, "Flowers", List.of(
@@ -191,7 +202,15 @@ public enum FlowerCollection {
             new CaveVinePlant(Material.GLOW_BERRIES, Material.CAVE_VINES, "Glow Berries [BERRIES]", 0, true),
             new CaveVinePlant(Material.GLOW_BERRIES, Material.CAVE_VINES, "Glow Berries", 0, false),
             new DefaultFlower(Material.WITHER_ROSE, "Wither Rose"),
-            new DefaultFlower(Material.SPORE_BLOSSOM, "Spore Blossom")))),
+            new DefaultFlower(Material.SPORE_BLOSSOM, "Spore Blossom"),
+            new DefaultFlower(Material.OPEN_EYEBLOSSOM, "Open Eyeblossom"),
+            new DefaultFlower(Material.CLOSED_EYEBLOSSOM, "Closed Eyeblossom"),
+            new DefaultFlower(Material.CACTUS_FLOWER, "Cactus Flower"),
+            new DefaultFlower(Material.FIREFLY_BUSH, "Firefly Bush"),
+            new DefaultFlower(Material.BUSH, "Bush"),
+            new DefaultFlower(Material.SHORT_DRY_GRASS, "Short Dry Grass"),
+            new DefaultFlower(Material.TALL_DRY_GRASS, "Tall Dry Grass")
+    ))),
 
     WATER(new FlowerGroup(Material.WATER_BUCKET, "Waterplants", List.of(
             new WaterFlower(Material.HORN_CORAL, "Horn Coral [WATERLOGGED]", true),
@@ -225,6 +244,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.TWISTING_VINES, "Twisting Vines Plant"),
             new DefaultFlower(Material.TWISTING_VINES, "Twisting Vines"),
             new DefaultFlower(Material.HANGING_ROOTS, "Hanging Roots"),
+            new DefaultFlower(Material.PALE_HANGING_MOSS, "Pale Hanging Moss"),
             new DefaultFlower(Material.CACTUS, "Cactus"),
             new DefaultFlower(Material.SUGAR_CANE, "Sugar Cane")))),
 
@@ -233,7 +253,7 @@ public enum FlowerCollection {
             new DefaultFlower(Material.POPPY, Material.POTTED_POPPY, "Potted Poppy"),
             new DefaultFlower(Material.BLUE_ORCHID, Material.POTTED_BLUE_ORCHID, "Potted Blue Orchid"),
             new DefaultFlower(Material.ALLIUM, Material.POTTED_ALLIUM, "Potted Allium"),
-            new DefaultFlower(Material.AZURE_BLUET, Material.POTTED_AZURE_BLUET, "Potted Azure Bullet"),
+            new DefaultFlower(Material.AZURE_BLUET, Material.POTTED_AZURE_BLUET, "Potted Azure Bluet"),
             new DefaultFlower(Material.RED_TULIP, Material.POTTED_RED_TULIP, "Potted Red Tulip"),
             new DefaultFlower(Material.ORANGE_TULIP, Material.POTTED_ORANGE_TULIP, "Potted Orange Tulip"),
             new DefaultFlower(Material.WHITE_TULIP, Material.POTTED_WHITE_TULIP, "Potted White Tulip"),
@@ -243,12 +263,14 @@ public enum FlowerCollection {
             new DefaultFlower(Material.CORNFLOWER, Material.POTTED_CORNFLOWER, "Potted Cornflower"),
             new DefaultFlower(Material.WITHER_ROSE, Material.POTTED_WITHER_ROSE, "Potted Wither Rose"),
             new DefaultFlower(Material.TORCHFLOWER, Material.POTTED_TORCHFLOWER, "Potted Torchflower"),
-            new DefaultFlower(Material.CRIMSON_ROOTS, Material.POTTED_CRIMSON_ROOTS, "Potted Crimson Roots"),
+            new DefaultFlower(Material.OPEN_EYEBLOSSOM, Material.POTTED_OPEN_EYEBLOSSOM, "Potted Open Eyeblossom"),
+            new DefaultFlower(Material.CLOSED_EYEBLOSSOM, Material.POTTED_CLOSED_EYEBLOSSOM, "Potted Closed Eyeblossom"),
             new DefaultFlower(Material.WARPED_ROOTS, Material.POTTED_WARPED_ROOTS, "Potted Warped Roots"),
             new DefaultFlower(Material.FERN, Material.POTTED_FERN, "Potted Fern"),
             new DefaultFlower(Material.DEAD_BUSH, Material.POTTED_DEAD_BUSH, "Potted Dead Bush"),
             new DefaultFlower(Material.CACTUS, Material.POTTED_CACTUS, "Potted Cactus"),
-            new DefaultFlower(Material.BAMBOO, Material.POTTED_BAMBOO, "Potted Bamboo")))),
+            new DefaultFlower(Material.BAMBOO, Material.POTTED_BAMBOO, "Potted Bamboo")
+    ))),
 
     FENCE(new FlowerGroup(Material.OAK_FENCE, "Fence", List.of(
             new DefaultFlower(Material.OAK_FENCE, "Oak Fence"),
@@ -265,7 +287,12 @@ public enum FlowerCollection {
             new DefaultFlower(Material.CRIMSON_FENCE, "Crimson Fence"),
             new DefaultFlower(Material.END_ROD, "End Rod"),
             new DefaultFlower(Material.LIGHTNING_ROD, "Lightning Rod"),
-            new DefaultFlower(Material.CHAIN, "Chain")))),
+            new DefaultFlower(Material.IRON_CHAIN, "Iron Chain"),
+            new DefaultFlower(Material.WAXED_COPPER_CHAIN, "Waxed Copper Chain"),
+            new DefaultFlower(Material.WAXED_EXPOSED_COPPER_CHAIN, "Waxed Exposed Copper Chain"),
+            new DefaultFlower(Material.WAXED_WEATHERED_COPPER_CHAIN, "Waxed Weathered Copper Chain"),
+            new DefaultFlower(Material.WAXED_OXIDIZED_COPPER_CHAIN, "Waxed Oxidized Copper Chain")
+    ))),
 
     GLASS(new FlowerGroup(Material.GREEN_STAINED_GLASS, "Glass Pains", List.of(
             new DefaultFlower(Material.WHITE_STAINED_GLASS_PANE, "White Stained Glass Pane"),
@@ -283,18 +310,26 @@ public enum FlowerCollection {
             new DefaultFlower(Material.BLUE_STAINED_GLASS_PANE, "Blue Stained Glass Pane"),
             new DefaultFlower(Material.PURPLE_STAINED_GLASS_PANE, "Purple Stained Glass Pane"),
             new DefaultFlower(Material.MAGENTA_STAINED_GLASS_PANE, "Magenta Stained Glass Pane"),
-            new DefaultFlower(Material.PINK_STAINED_GLASS_PANE, "Pink Stained Glass Pane"),
-            new DefaultFlower(Material.IRON_BARS, "Iron Bars")))),
+            new DefaultFlower(Material.PINK_STAINED_GLASS_PANE, "Pink Stained Glass Pane")))),
+
+    BARS(new FlowerGroup(Material.IRON_BARS, "Bars", List.of(
+            new DefaultFlower(Material.IRON_BARS, "Iron Bars"),
+            new DefaultFlower(Material.WAXED_COPPER_BARS, "Waxed Copper Bars"),
+            new DefaultFlower(Material.WAXED_EXPOSED_COPPER_BARS, "Waxed Exposed Copper Bars"),
+            new DefaultFlower(Material.WAXED_WEATHERED_COPPER_BARS, "Waxed Weathered Copper Bars"),
+            new DefaultFlower(Material.WAXED_OXIDIZED_COPPER_BARS, "Waxed Oxidized Copper Bars")
+    ))),
 
     LEAVES(new FlowerGroup((Material.OAK_LEAVES), "Leaves", List.of(
             new LeaveFlower(Material.OAK_LEAVES, "Oak Leaves", true),
             new LeaveFlower(Material.SPRUCE_LEAVES, "Spruce Leaves", true),
-            new LeaveFlower(Material.DARK_OAK_LEAVES, "Dark Oak Leaves", true),
             new LeaveFlower(Material.BIRCH_LEAVES, "Birch Leaves", true),
             new LeaveFlower(Material.JUNGLE_LEAVES, "Jungle Leaves", true),
             new LeaveFlower(Material.ACACIA_LEAVES, "Acacia Leaves", true),
+            new LeaveFlower(Material.DARK_OAK_LEAVES, "Dark Oak Leaves", true),
             new LeaveFlower(Material.MANGROVE_LEAVES, "Mangrove Leaves", true),
             new LeaveFlower(Material.CHERRY_LEAVES, "Cherry Leaves", true),
+            new LeaveFlower(Material.PALE_OAK_LEAVES, "Pale Oak Leaves", true),
             new LeaveFlower(Material.AZALEA_LEAVES, "Azalea Leaves", true),
             new LeaveFlower(Material.FLOWERING_AZALEA_LEAVES, "Flowering Azalea Leaves", true)))),
 
